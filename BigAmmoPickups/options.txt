@@ -90,6 +90,19 @@
 			"min": 0,
 			"max": 30,
 			"step": 1
+		},
+		{
+			"type": "divider",
+			"size": 12
+		},
+		{
+			"type": "toggle",
+			"id": "bap_tactical_from_ammo",
+			"title": "bap_tactical_from_ammo_title",
+			"description": "bap_tactical_from_ammo_desc",
+			"callback": "BigAmmoPickups_TacticalFromAmmo",
+			"value": "tactical_from_ammo",
+			"default_value": false
 		}
 	]
 }

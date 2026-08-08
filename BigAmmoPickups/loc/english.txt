@@ -14,5 +14,7 @@
 	"bap_zero_min_title": "Special ammo min",
 	"bap_zero_min_desc": "Absolute min ammo for zero-pickup weapons (not multiplied).",
 	"bap_zero_max_title": "Special ammo max",
-	"bap_zero_max_desc": "Absolute max ammo for zero-pickup weapons (not multiplied)."
+	"bap_zero_max_desc": "Absolute max ammo for zero-pickup weapons (not multiplied).",
+	"bap_tactical_from_ammo_title": "Tactical from ammo drops",
+	"bap_tactical_from_ammo_desc": "Every 20–25 enemy ammo drops: restore +1 charge of your equipped deployable (bags, sentry, trip mines…) and +1 throwable (grenades, etc.). Off by default."
 }

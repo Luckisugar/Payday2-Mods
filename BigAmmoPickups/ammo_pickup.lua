@@ -21,6 +21,7 @@ function BAP:DefaultSettings()
 		boost_zero_pickup = true,
 		zero_pickup_min = 4,
 		zero_pickup_max = 8,
+		tactical_from_ammo = false,
 	}
 end
 

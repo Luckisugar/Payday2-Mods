@@ -28,7 +28,7 @@
     "sa_pager_detection_threshold_title" : "Pager Detection Threshold",
     "sa_pager_detection_threshold_desc" : "If detection progress meter exceeds
 this percentage, the pager goes off anyway",
-    "sa_lobby_notice_1" : "Host is running 'Silent Assassin'.  ",
-    "sa_lobby_notice_2" : "Kills on unalerted guards do not trigger pagers.  ",
-    "sa_lobby_notice_3" : "A maximum of $num_pagers  pagers are allowed, and each player may answer up to $num_per_player pagers.  If detection progess gets to $pager_detection_threshold_pct% a pager goes off on kill."
+    "sa_lobby_notice_1" : "Your awesome host is running mods, awesome. | You should check his github and discord!  ",
+    "sa_lobby_notice_2" : "https://discord.gg/fnbXFBzJDE",
+    "sa_lobby_notice_3" : "https://github.com/Luckisugar/Payday2-Mods"
 }

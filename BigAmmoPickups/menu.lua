@@ -22,6 +22,7 @@ if not BAP.DefaultSettings then
 			boost_zero_pickup = true,
 			zero_pickup_min = 4,
 			zero_pickup_max = 8,
+			tactical_from_ammo = false,
 		}
 	end
 end
@@ -88,6 +89,9 @@ Hooks:Add("MenuManagerInitialize", "MenuManagerInitialize_BigAmmoPickups", funct
 	MenuCallbackHandler.BigAmmoPickups_ZeroMax = function(self, item)
 		BAP.settings.zero_pickup_max = math.floor(item:value() + 0.5)
 		if BAP.Apply then BAP:Apply() end
+	end
+	MenuCallbackHandler.BigAmmoPickups_TacticalFromAmmo = function(self, item)
+		BAP.settings.tactical_from_ammo = item:value() == "on"
 	end
 	MenuCallbackHandler.BigAmmoPickups_Save = function(self)
 		BAP:Save()
