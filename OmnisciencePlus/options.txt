@@ -1,0 +1,131 @@
+{
+	"menu_id": "omniscience_plus_options",
+	"parent_menu_id": "blt_options",
+	"title": "omp_menu_title",
+	"description": "omp_menu_desc",
+	"back_callback": "OmnisciencePlus_Save",
+	"items": [
+		{
+			"type": "toggle",
+			"id": "omp_enabled",
+			"title": "omp_enabled_title",
+			"description": "omp_enabled_desc",
+			"callback": "OmnisciencePlus_Enabled",
+			"value": "enabled",
+			"default_value": true
+		},
+		{
+			"type": "toggle",
+			"id": "omp_require_skill",
+			"title": "omp_require_skill_title",
+			"description": "omp_require_skill_desc",
+			"callback": "OmnisciencePlus_RequireSkill",
+			"value": "require_skill",
+			"default_value": true
+		},
+		{
+			"type": "toggle",
+			"id": "omp_permanent",
+			"title": "omp_permanent_title",
+			"description": "omp_permanent_desc",
+			"callback": "OmnisciencePlus_Permanent",
+			"value": "permanent_marks",
+			"default_value": false
+		},
+		{
+			"type": "divider",
+			"size": 12
+		},
+		{
+			"type": "slider",
+			"id": "omp_start_t",
+			"title": "omp_start_t_title",
+			"description": "omp_start_t_desc",
+			"callback": "OmnisciencePlus_StartT",
+			"value": "start_t_tenths",
+			"default_value": 10,
+			"min": 1,
+			"max": 50,
+			"step": 1
+		},
+		{
+			"type": "slider",
+			"id": "omp_interval_t",
+			"title": "omp_interval_t_title",
+			"description": "omp_interval_t_desc",
+			"callback": "OmnisciencePlus_IntervalT",
+			"value": "interval_t_tenths",
+			"default_value": 10,
+			"min": 1,
+			"max": 50,
+			"step": 1
+		},
+		{
+			"type": "slider",
+			"id": "omp_radius_m",
+			"title": "omp_radius_m_title",
+			"description": "omp_radius_m_desc",
+			"callback": "OmnisciencePlus_RadiusM",
+			"value": "radius_m",
+			"default_value": 75,
+			"min": 10,
+			"max": 200,
+			"step": 5
+		},
+		{
+			"type": "slider",
+			"id": "omp_resense",
+			"title": "omp_resense_title",
+			"description": "omp_resense_desc",
+			"callback": "OmnisciencePlus_Resense",
+			"value": "target_resense_t",
+			"default_value": 10,
+			"min": 1,
+			"max": 30,
+			"step": 1
+		},
+		{
+			"type": "slider",
+			"id": "omp_marks_per_tick",
+			"title": "omp_marks_per_tick_title",
+			"description": "omp_marks_per_tick_desc",
+			"callback": "OmnisciencePlus_MarksPerTick",
+			"value": "marks_per_tick",
+			"default_value": 0,
+			"min": 0,
+			"max": 20,
+			"step": 1
+		},
+		{
+			"type": "divider",
+			"size": 12
+		},
+		{
+			"type": "toggle",
+			"id": "omp_mark_items",
+			"title": "omp_mark_items_title",
+			"description": "omp_mark_items_desc",
+			"callback": "OmnisciencePlus_MarkItems",
+			"value": "mark_items",
+			"default_value": true
+		},
+		{
+			"type": "toggle",
+			"id": "omp_mark_cameras",
+			"title": "omp_mark_cameras_title",
+			"description": "omp_mark_cameras_desc",
+			"callback": "OmnisciencePlus_MarkCameras",
+			"value": "mark_cameras",
+			"default_value": true
+		},
+		{
+			"type": "toggle",
+			"id": "omp_sync_people",
+			"title": "omp_sync_people_title",
+			"description": "omp_sync_people_desc",
+			"callback": "OmnisciencePlus_SyncPeople",
+			"value": "sync_people",
+			"default_value": false
+		}
+	]
+}

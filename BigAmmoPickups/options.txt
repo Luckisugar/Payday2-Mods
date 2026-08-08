@@ -1,0 +1,95 @@
+{
+	"menu_id": "big_ammo_pickups_options",
+	"parent_menu_id": "blt_options",
+	"title": "bap_menu_title",
+	"description": "bap_menu_desc",
+	"back_callback": "BigAmmoPickups_Save",
+	"items": [
+		{
+			"type": "toggle",
+			"id": "bap_enabled",
+			"title": "bap_enabled_title",
+			"description": "bap_enabled_desc",
+			"callback": "BigAmmoPickups_Enabled",
+			"value": "enabled",
+			"default_value": true
+		},
+		{
+			"type": "divider",
+			"size": 12
+		},
+		{
+			"type": "slider",
+			"id": "bap_multiplier",
+			"title": "bap_multiplier_title",
+			"description": "bap_multiplier_desc",
+			"callback": "BigAmmoPickups_Multiplier",
+			"value": "multiplier",
+			"default_value": 10,
+			"min": 1,
+			"max": 50,
+			"step": 1
+		},
+		{
+			"type": "slider",
+			"id": "bap_min_floor",
+			"title": "bap_min_floor_title",
+			"description": "bap_min_floor_desc",
+			"callback": "BigAmmoPickups_MinFloor",
+			"value": "min_floor",
+			"default_value": 2,
+			"min": 0,
+			"max": 50,
+			"step": 1
+		},
+		{
+			"type": "slider",
+			"id": "bap_max_floor",
+			"title": "bap_max_floor_title",
+			"description": "bap_max_floor_desc",
+			"callback": "BigAmmoPickups_MaxFloor",
+			"value": "max_floor",
+			"default_value": 5,
+			"min": 0,
+			"max": 50,
+			"step": 1
+		},
+		{
+			"type": "divider",
+			"size": 12
+		},
+		{
+			"type": "toggle",
+			"id": "bap_boost_zero",
+			"title": "bap_boost_zero_title",
+			"description": "bap_boost_zero_desc",
+			"callback": "BigAmmoPickups_BoostZero",
+			"value": "boost_zero_pickup",
+			"default_value": true
+		},
+		{
+			"type": "slider",
+			"id": "bap_zero_min",
+			"title": "bap_zero_min_title",
+			"description": "bap_zero_min_desc",
+			"callback": "BigAmmoPickups_ZeroMin",
+			"value": "zero_pickup_min",
+			"default_value": 4,
+			"min": 0,
+			"max": 30,
+			"step": 1
+		},
+		{
+			"type": "slider",
+			"id": "bap_zero_max",
+			"title": "bap_zero_max_title",
+			"description": "bap_zero_max_desc",
+			"callback": "BigAmmoPickups_ZeroMax",
+			"value": "zero_pickup_max",
+			"default_value": 8,
+			"min": 0,
+			"max": 30,
+			"step": 1
+		}
+	]
+}

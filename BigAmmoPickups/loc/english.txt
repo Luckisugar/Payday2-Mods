@@ -1,0 +1,18 @@
+{
+	"bap_menu_title": "Big Ammo Pickups",
+	"bap_menu_desc": "Ammo restored from enemy drop boxes.",
+	"bap_enabled_title": "Enabled",
+	"bap_enabled_desc": "Master switch for the mod.",
+	"bap_multiplier_title": "Pickup multiplier",
+	"bap_multiplier_desc": "Multiplies normal weapons' ammo from drop boxes. Vanilla is 1.",
+	"bap_min_floor_title": "Min floor (bullets)",
+	"bap_min_floor_desc": "Lowest min bullets a normal pickup can roll after multiply. 0 = no floor.",
+	"bap_max_floor_title": "Max floor (bullets)",
+	"bap_max_floor_desc": "Lowest max bullets a normal pickup can roll after multiply. 0 = no floor.",
+	"bap_boost_zero_title": "Boost special ammo (zero-pickup guns)",
+	"bap_boost_zero_desc": "RPG, saw, bows, etc. that normally get 0 from boxes.",
+	"bap_zero_min_title": "Special ammo min",
+	"bap_zero_min_desc": "Absolute min ammo for zero-pickup weapons (not multiplied).",
+	"bap_zero_max_title": "Special ammo max",
+	"bap_zero_max_desc": "Absolute max ammo for zero-pickup weapons (not multiplied)."
+}

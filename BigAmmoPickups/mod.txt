@@ -1,0 +1,19 @@
+{
+	"name": "Big Ammo Pickups",
+	"description": "Increases ammo from enemy drop boxes. Options in BLT Mod Options.",
+	"author": "Luckysugar",
+	"contact": "",
+	"version": "1.1.1",
+	"blt_version": 2,
+	"priority": 10,
+	"hooks": [
+		{
+			"hook_id": "lib/managers/menumanager",
+			"script_path": "menu.lua"
+		},
+		{
+			"hook_id": "lib/tweak_data/weapontweakdata",
+			"script_path": "ammo_pickup.lua"
+		}
+	]
+}
