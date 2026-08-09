@@ -23,6 +23,9 @@ if not BAP.DefaultSettings then
 			zero_pickup_min = 4,
 			zero_pickup_max = 8,
 			tactical_from_ammo = false,
+			tactical_min = 20,
+			tactical_max = 25,
+			tactical_throwable = true,
 		}
 	end
 end
@@ -92,6 +95,15 @@ Hooks:Add("MenuManagerInitialize", "MenuManagerInitialize_BigAmmoPickups", funct
 	end
 	MenuCallbackHandler.BigAmmoPickups_TacticalFromAmmo = function(self, item)
 		BAP.settings.tactical_from_ammo = item:value() == "on"
+	end
+	MenuCallbackHandler.BigAmmoPickups_TacticalMin = function(self, item)
+		BAP.settings.tactical_min = math.floor(item:value() + 0.5)
+	end
+	MenuCallbackHandler.BigAmmoPickups_TacticalMax = function(self, item)
+		BAP.settings.tactical_max = math.floor(item:value() + 0.5)
+	end
+	MenuCallbackHandler.BigAmmoPickups_TacticalThrowable = function(self, item)
+		BAP.settings.tactical_throwable = item:value() == "on"
 	end
 	MenuCallbackHandler.BigAmmoPickups_Save = function(self)
 		BAP:Save()

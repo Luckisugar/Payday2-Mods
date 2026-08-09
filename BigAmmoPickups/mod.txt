@@ -3,7 +3,7 @@
 	"description": "Increases ammo from enemy drop boxes. Options in BLT Mod Options.",
 	"author": "Luckysugar",
 	"contact": "",
-	"version": "1.2.0",
+	"version": "1.3.0",
 	"blt_version": 2,
 	"priority": 10,
 	"hooks": [

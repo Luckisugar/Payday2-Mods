@@ -1,18 +1,23 @@
 --[[
 	Big Ammo Pickups — optional tactical charge restore from ammo drops.
-	Every N enemy ammo-box pickups (random 20–25): +1 selected deployable,
-	+1 throwable (grenades etc.).
+	Every N enemy ammo-box pickups (random min–max from settings): +1 selected deployable,
+	optionally +1 throwable (grenades etc.).
 ]]
 
 _G.BigAmmoPickups = _G.BigAmmoPickups or {}
 local BAP = BigAmmoPickups
 
 BAP._ammo_drop_count = BAP._ammo_drop_count or 0
-BAP._tactical_next_at = BAP._tactical_next_at or math.random(20, 25)
+BAP._tactical_next_at = BAP._tactical_next_at or 22
 
 function BAP:ResetTacticalCounter()
 	self._ammo_drop_count = 0
-	self._tactical_next_at = math.random(20, 25)
+	local min_i = (self.settings and self.settings.tactical_min) or 20
+	local max_i = (self.settings and self.settings.tactical_max) or 25
+	if min_i > max_i then
+		min_i, max_i = max_i, min_i
+	end
+	self._tactical_next_at = math.random(min_i, max_i)
 end
 
 function BAP:_equipment_max_amount(equipment_name, slot_index)
@@ -58,9 +63,11 @@ function BAP:RestoreTacticalCharge()
 		end
 	end
 
-	-- Throwable (frags, molotov, flash, knives…).
-	if pm.add_grenade_amount and not (pm.got_max_grenades and pm:got_max_grenades()) then
-		pm:add_grenade_amount(1)
+	-- Throwable (frags, molotov, flash, knives…) — optional.
+	if self.settings and self.settings.tactical_throwable then
+		if pm.add_grenade_amount and not (pm.got_max_grenades and pm:got_max_grenades()) then
+			pm:add_grenade_amount(1)
+		end
 	end
 end
 
