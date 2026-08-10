@@ -43,6 +43,27 @@ end)
 
 local MENU_ID = "auto_skill_sets_menu"
 
+--- Hide cheat rows unless Edit (Cheat) is on (re-evaluated when the node refreshes).
+local function mark_edit_cheat_only(item)
+	if not item or not item._parameters then
+		return item
+	end
+	item._parameters.visible_callback = "ass_edit_cheat_visible"
+	return item
+end
+
+local function refresh_ass_menu()
+	if not managers or not managers.menu then
+		return
+	end
+	local active = managers.menu:active_menu()
+	if active and active.logic and active.logic.refresh_node then
+		pcall(function()
+			active.logic:refresh_node()
+		end)
+	end
+end
+
 Hooks:Add("MenuManagerSetupCustomMenus", "AutoSkillSets_setup", function(menu_manager, nodes)
 	MenuHelper:NewMenu(MENU_ID)
 end)
@@ -50,6 +71,10 @@ end)
 Hooks:Add("MenuManagerPopulateCustomMenus", "AutoSkillSets_populate", function(menu_manager, nodes)
 	if not ASS.settings then
 		ASS:Load()
+	end
+
+	MenuCallbackHandler.ass_edit_cheat_visible = function(self, item)
+		return ASS.settings and ASS.settings.edit_cheat == true
 	end
 
 	MenuCallbackHandler.ass_toggle_enabled = function(self, item)
@@ -73,7 +98,6 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "AutoSkillSets_populate", function(m
 	end
 
 	MenuCallbackHandler.ass_set_slot = function(self, item)
-		-- multiple_choice value is 1-based index into items
 		local idx = math.floor(tonumber(item:value()) or 1)
 		ASS.settings.active_slot = math.max(1, math.min(ASS.SLOT_COUNT or 8, idx))
 		ASS:Save()
@@ -94,6 +118,9 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "AutoSkillSets_populate", function(m
 	end
 
 	MenuCallbackHandler.ass_apply_cheat = function(self, item)
+		if not ASS.settings.edit_cheat then
+			return
+		end
 		if ASS.TryApply then
 			ASS:TryApply(true, "manual")
 		end
@@ -114,6 +141,7 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "AutoSkillSets_populate", function(m
 	MenuCallbackHandler.ass_toggle_edit_cheat = function(self, item)
 		ASS.settings.edit_cheat = item:value() == "on"
 		ASS:Save()
+		refresh_ass_menu()
 	end
 
 	MenuCallbackHandler.ass_set_level = function(self, item)
@@ -149,6 +177,7 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "AutoSkillSets_populate", function(m
 		end
 	end
 
+	-- ── Normal options ──────────────────────────────────────────────
 	MenuHelper:AddToggle({
 		id = "ass_enabled",
 		title = "ass_enabled_title",
@@ -190,7 +219,7 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "AutoSkillSets_populate", function(m
 	})
 
 	MenuHelper:AddDivider({
-		id = "ass_div_1",
+		id = "ass_div_builds",
 		size = 12,
 		menu_id = MENU_ID,
 		priority = 160
@@ -235,21 +264,12 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "AutoSkillSets_populate", function(m
 	})
 
 	MenuHelper:AddButton({
-		id = "ass_apply_cheat",
-		title = "ass_apply_cheat_title",
-		desc = "ass_apply_cheat_desc",
-		callback = "ass_apply_cheat",
-		menu_id = MENU_ID,
-		priority = 120
-	})
-
-	MenuHelper:AddButton({
 		id = "ass_diff",
 		title = "ass_diff_title",
 		desc = "ass_diff_desc",
 		callback = "ass_diff",
 		menu_id = MENU_ID,
-		priority = 110
+		priority = 120
 	})
 
 	MenuHelper:AddButton({
@@ -258,14 +278,15 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "AutoSkillSets_populate", function(m
 		desc = "ass_delete_desc",
 		callback = "ass_delete",
 		menu_id = MENU_ID,
-		priority = 100
+		priority = 110
 	})
 
+	-- ── Edit (Cheat) gate + gated controls ──────────────────────────
 	MenuHelper:AddDivider({
-		id = "ass_div_2",
-		size = 16,
+		id = "ass_div_before_edit",
+		size = 18,
 		menu_id = MENU_ID,
-		priority = 90
+		priority = 100
 	})
 
 	MenuHelper:AddToggle({
@@ -275,10 +296,35 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "AutoSkillSets_populate", function(m
 		callback = "ass_toggle_edit_cheat",
 		value = ASS.settings.edit_cheat,
 		menu_id = MENU_ID,
-		priority = 80
+		priority = 90
 	})
 
-	MenuHelper:AddSlider({
+	-- space after Edit toggle, then Restore Skills (cheat-only)
+	mark_edit_cheat_only(MenuHelper:AddDivider({
+		id = "ass_div_after_edit",
+		size = 14,
+		menu_id = MENU_ID,
+		priority = 85
+	}))
+
+	mark_edit_cheat_only(MenuHelper:AddButton({
+		id = "ass_apply_cheat",
+		title = "ass_apply_cheat_title",
+		desc = "ass_apply_cheat_desc",
+		callback = "ass_apply_cheat",
+		menu_id = MENU_ID,
+		priority = 80
+	}))
+
+	-- Level section
+	mark_edit_cheat_only(MenuHelper:AddDivider({
+		id = "ass_div_level",
+		size = 16,
+		menu_id = MENU_ID,
+		priority = 75
+	}))
+
+	mark_edit_cheat_only(MenuHelper:AddSlider({
 		id = "ass_level",
 		title = "ass_level_title",
 		desc = "ass_level_desc",
@@ -288,20 +334,29 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "AutoSkillSets_populate", function(m
 		max = 100,
 		step = 1,
 		show_value = true,
+		display_precision = 0,
 		menu_id = MENU_ID,
 		priority = 70
-	})
+	}))
 
-	MenuHelper:AddButton({
+	mark_edit_cheat_only(MenuHelper:AddButton({
 		id = "ass_level_apply",
 		title = "ass_level_apply_title",
 		desc = "ass_level_apply_desc",
 		callback = "ass_apply_level",
 		menu_id = MENU_ID,
-		priority = 60
-	})
+		priority = 65
+	}))
 
-	MenuHelper:AddSlider({
+	-- Infamy section
+	mark_edit_cheat_only(MenuHelper:AddDivider({
+		id = "ass_div_infamy",
+		size = 16,
+		menu_id = MENU_ID,
+		priority = 60
+	}))
+
+	mark_edit_cheat_only(MenuHelper:AddSlider({
 		id = "ass_infamy",
 		title = "ass_infamy_title",
 		desc = "ass_infamy_desc",
@@ -311,20 +366,29 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "AutoSkillSets_populate", function(m
 		max = 500,
 		step = 1,
 		show_value = true,
+		display_precision = 0,
 		menu_id = MENU_ID,
-		priority = 50
-	})
+		priority = 55
+	}))
 
-	MenuHelper:AddButton({
+	mark_edit_cheat_only(MenuHelper:AddButton({
 		id = "ass_infamy_apply",
 		title = "ass_infamy_apply_title",
 		desc = "ass_infamy_apply_desc",
 		callback = "ass_apply_infamy",
 		menu_id = MENU_ID,
-		priority = 40
-	})
+		priority = 50
+	}))
 
-	MenuHelper:AddSlider({
+	-- Skill Points section
+	mark_edit_cheat_only(MenuHelper:AddDivider({
+		id = "ass_div_sp",
+		size = 16,
+		menu_id = MENU_ID,
+		priority = 45
+	}))
+
+	mark_edit_cheat_only(MenuHelper:AddSlider({
 		id = "ass_sp",
 		title = "ass_sp_title",
 		desc = "ass_sp_desc",
@@ -334,18 +398,19 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "AutoSkillSets_populate", function(m
 		max = 500,
 		step = 1,
 		show_value = true,
+		display_precision = 0,
 		menu_id = MENU_ID,
-		priority = 30
-	})
+		priority = 40
+	}))
 
-	MenuHelper:AddButton({
+	mark_edit_cheat_only(MenuHelper:AddButton({
 		id = "ass_sp_apply",
 		title = "ass_sp_apply_title",
 		desc = "ass_sp_apply_desc",
 		callback = "ass_apply_sp",
 		menu_id = MENU_ID,
-		priority = 20
-	})
+		priority = 35
+	}))
 end)
 
 Hooks:Add("MenuManagerBuildCustomMenus", "AutoSkillSets_build", function(menu_manager, nodes)
