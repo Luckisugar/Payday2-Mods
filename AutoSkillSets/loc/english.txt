@@ -1,0 +1,64 @@
+{
+	"ass_menu_title": "Auto Skill Sets",
+	"ass_menu_desc": "Save skill builds, auto-spend after level-ups, restore after infamy.",
+
+	"ass_enabled_title": "Enabled",
+	"ass_enabled_desc": "Master switch for Auto Skill Sets.",
+
+	"ass_auto_spend_title": "Auto-spend skill points",
+	"ass_auto_spend_desc": "When you gain skill points, spend them toward the active saved build (menu/lobby only by default).",
+
+	"ass_infamy_prompt_title": "Infamy restore prompt",
+	"ass_infamy_prompt_desc": "After infamy resets skills, ask Yes / No / Restore Skills (Cheat).",
+
+	"ass_block_heist_title": "Block mid-heist apply",
+	"ass_block_heist_desc": "Do not auto-spend or auto-apply while in a heist.",
+
+	"ass_slot_title": "Active build slot",
+	"ass_slot_desc": "Which saved slot is active for auto-spend, apply, save, delete, and diff.",
+
+	"ass_slot_1": "Slot 1",
+	"ass_slot_2": "Slot 2",
+	"ass_slot_3": "Slot 3",
+	"ass_slot_4": "Slot 4",
+	"ass_slot_5": "Slot 5",
+	"ass_slot_6": "Slot 6",
+	"ass_slot_7": "Slot 7",
+	"ass_slot_8": "Slot 8",
+
+	"ass_save_title": "Save current skills into slot",
+	"ass_save_desc": "Snapshot your current skill tree into the active slot (overwrites that slot).",
+
+	"ass_apply_title": "Apply build (spend points)",
+	"ass_apply_desc": "Spend available skill points to match the active saved build (priority order, legal tiers).",
+
+	"ass_apply_cheat_title": "Restore Skills (Cheat)",
+	"ass_apply_cheat_desc": "Complete the active build even without enough skill points.",
+
+	"ass_diff_title": "Diff view",
+	"ass_diff_desc": "Show owned / partial / missing skills vs the active build (SYSTEM chat + popup).",
+
+	"ass_delete_title": "Delete active slot",
+	"ass_delete_desc": "Clear the active build slot.",
+
+	"ass_edit_cheat_title": "Edit (Cheat)",
+	"ass_edit_cheat_desc": "Unlock Level / Infamy / Skill Points controls below. Online risk is yours.",
+
+	"ass_level_title": "Level (cheat)",
+	"ass_level_desc": "Target player level (0–100). Click Apply Level to set.",
+
+	"ass_level_apply_title": "Apply Level",
+	"ass_level_apply_desc": "Set your character level to the slider value. Requires Edit (Cheat).",
+
+	"ass_infamy_title": "Infamy (cheat)",
+	"ass_infamy_desc": "Target infamy rank (0–500). Click Apply Infamy to set.",
+
+	"ass_infamy_apply_title": "Apply Infamy",
+	"ass_infamy_apply_desc": "Set your infamy rank to the slider value. Requires Edit (Cheat).",
+
+	"ass_sp_title": "Skill Points (cheat)",
+	"ass_sp_desc": "Target free skill points. Click Apply Skill Points to set.",
+
+	"ass_sp_apply_title": "Apply Skill Points",
+	"ass_sp_apply_desc": "Set free skill points to the slider value. Requires Edit (Cheat)."
+}

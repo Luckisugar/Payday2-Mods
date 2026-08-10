@@ -16,6 +16,7 @@ Personal SuperBLT mods for **PAYDAY 2**. Client-side QoL / stealth tooling. Not 
   - [Omniscience+](#2-omniscience)
   - [Saw Stealth Conceal](#3-saw-stealth-conceal)
   - [Silent Assassin (fork)](#4-silent-assassin-fork)
+  - [Auto Skill Sets](#5-auto-skill-sets)
 - [Notes](#notes)
 - [License](#license)
 
@@ -71,14 +72,29 @@ Original SA options (pager counts, detection threshold, matchmaking filter) stil
 
 > Host authority: pager removal is decided on the **server**. Host this mod for reliable behavior.
 
+### 5) Auto Skill Sets
+
+Saves skill builds and re-spends them after **infamy** / level-ups so you are not rebuilding the same tree by hand every time.
+
+- **8 slots** — save / overwrite / delete snapshots of your skill tree  
+- **Auto-spend** — spend free skill points toward the active build on level-up  
+- **Infamy prompt** — optional **Yes** / **No** / **Restore Skills (Cheat)**  
+- **Diff view** — owned / partial / missing vs the active build  
+- **SYSTEM chat** — local notices only when the mod spends or applies  
+- **Edit (Cheat)** — optional Level / Infamy / Skill Points controls  
+- Mid-heist auto-apply **blocked by default**
+
+> Cheat restore / Edit (Cheat) can trip skill-point detectors and look bad online. Use at your own risk.
+
 ## Notes
 
 - These are **mods**, not cheats aimed at public matchmaking advantage. Use common sense online.  
 - Silent Assassin updates from the original author may overwrite a Vortex install — keep this fork folder if you want the crouch / local options.  
+- Auto Skill Sets stores builds in SuperBLT’s save path (`auto_skill_sets.txt`), not only inside the mod folder.  
 - Game Lua dumps for research: [Payday-2-LuaJIT-Complete](https://github.com/steam-test1/Payday-2-LuaJIT-Complete) (reference only).
 
 ## License
 
-MIT for **original Luckisugar code** (Big Ammo, Omniscience+, Saw Stealth Conceal).
+MIT for **original Luckisugar code** (Big Ammo, Omniscience+, Saw Stealth Conceal, Auto Skill Sets).
 
 Silent Assassin remains credit to **DrTachyon**; this repo ships a small fork with extra options. If the original license differs, treat that folder under the original author’s terms and contact them for redistribution questions.
