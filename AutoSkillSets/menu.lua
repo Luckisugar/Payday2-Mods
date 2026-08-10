@@ -1,5 +1,8 @@
 --[[
 	Auto Skill Sets — BLT Mod Options menu
+
+	Visibility pattern matches DynamicSuspicionIndicators:
+	item._visible_callback_name_list + gui_node:refresh_gui on toggle.
 ]]
 
 _G.AutoSkillSets = _G.AutoSkillSets or {}
@@ -9,7 +12,6 @@ ASS._path = ASS._path or ModPath
 ASS._data_path = ASS._data_path or (SavePath .. "auto_skill_sets.txt")
 
 if not ASS.Load then
-	-- core.lua not loaded yet (menu hook first); minimal stubs until core loads
 	function ASS:DefaultSettings()
 		return {
 			enabled = true,
@@ -43,25 +45,12 @@ end)
 
 local MENU_ID = "auto_skill_sets_menu"
 
---- Hide cheat rows unless Edit (Cheat) is on (re-evaluated when the node refreshes).
-local function mark_edit_cheat_only(item)
-	if not item or not item._parameters then
-		return item
+-- Same technique as DynamicSuspicionIndicators menu/builder.lua
+local function set_visible_when(item, callback_name)
+	if item then
+		item._visible_callback_name_list = { callback_name }
 	end
-	item._parameters.visible_callback = "ass_edit_cheat_visible"
 	return item
-end
-
-local function refresh_ass_menu()
-	if not managers or not managers.menu then
-		return
-	end
-	local active = managers.menu:active_menu()
-	if active and active.logic and active.logic.refresh_node then
-		pcall(function()
-			active.logic:refresh_node()
-		end)
-	end
 end
 
 Hooks:Add("MenuManagerSetupCustomMenus", "AutoSkillSets_setup", function(menu_manager, nodes)
@@ -73,8 +62,20 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "AutoSkillSets_populate", function(m
 		ASS:Load()
 	end
 
-	MenuCallbackHandler.ass_edit_cheat_visible = function(self, item)
+	-- Visibility predicate (Edit (Cheat) must be on)
+	MenuCallbackHandler.ass_edit_cheat_visible = function()
 		return ASS.settings and ASS.settings.edit_cheat == true
+	end
+
+	-- Refresh row list after a parent toggle (DSI: dp_update_visibility)
+	MenuCallbackHandler.ass_update_visibility = function(_, item)
+		local gui_node = item and item.parameters and item:parameters().gui_node
+		if gui_node and gui_node.refresh_gui then
+			gui_node:refresh_gui(gui_node.node)
+			if gui_node.highlight_item then
+				gui_node:highlight_item(item, true)
+			end
+		end
 	end
 
 	MenuCallbackHandler.ass_toggle_enabled = function(self, item)
@@ -118,7 +119,7 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "AutoSkillSets_populate", function(m
 	end
 
 	MenuCallbackHandler.ass_apply_cheat = function(self, item)
-		if not ASS.settings.edit_cheat then
+		if not (ASS.settings and ASS.settings.edit_cheat) then
 			return
 		end
 		if ASS.TryApply then
@@ -138,10 +139,10 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "AutoSkillSets_populate", function(m
 		end
 	end
 
+	-- Space-separated callbacks: BLT runs both (same as DSI parent toggles)
 	MenuCallbackHandler.ass_toggle_edit_cheat = function(self, item)
 		ASS.settings.edit_cheat = item:value() == "on"
 		ASS:Save()
-		refresh_ass_menu()
 	end
 
 	MenuCallbackHandler.ass_set_level = function(self, item)
@@ -221,6 +222,7 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "AutoSkillSets_populate", function(m
 	MenuHelper:AddDivider({
 		id = "ass_div_builds",
 		size = 12,
+		no_text = true,
 		menu_id = MENU_ID,
 		priority = 160
 	})
@@ -281,10 +283,11 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "AutoSkillSets_populate", function(m
 		priority = 110
 	})
 
-	-- ── Edit (Cheat) gate + gated controls ──────────────────────────
+	-- ── Edit (Cheat) ────────────────────────────────────────────────
 	MenuHelper:AddDivider({
 		id = "ass_div_before_edit",
 		size = 18,
+		no_text = true,
 		menu_id = MENU_ID,
 		priority = 100
 	})
@@ -293,38 +296,39 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "AutoSkillSets_populate", function(m
 		id = "ass_edit_cheat",
 		title = "ass_edit_cheat_title",
 		desc = "ass_edit_cheat_desc",
-		callback = "ass_toggle_edit_cheat",
+		-- both fire: save setting, then rebuild visible rows (DSI pattern)
+		callback = "ass_toggle_edit_cheat ass_update_visibility",
 		value = ASS.settings.edit_cheat,
 		menu_id = MENU_ID,
 		priority = 90
 	})
 
-	-- space after Edit toggle, then Restore Skills (cheat-only)
-	mark_edit_cheat_only(MenuHelper:AddDivider({
+	set_visible_when(MenuHelper:AddDivider({
 		id = "ass_div_after_edit",
 		size = 14,
+		no_text = true,
 		menu_id = MENU_ID,
 		priority = 85
-	}))
+	}), "ass_edit_cheat_visible")
 
-	mark_edit_cheat_only(MenuHelper:AddButton({
+	set_visible_when(MenuHelper:AddButton({
 		id = "ass_apply_cheat",
 		title = "ass_apply_cheat_title",
 		desc = "ass_apply_cheat_desc",
 		callback = "ass_apply_cheat",
 		menu_id = MENU_ID,
 		priority = 80
-	}))
+	}), "ass_edit_cheat_visible")
 
-	-- Level section
-	mark_edit_cheat_only(MenuHelper:AddDivider({
+	set_visible_when(MenuHelper:AddDivider({
 		id = "ass_div_level",
 		size = 16,
+		no_text = true,
 		menu_id = MENU_ID,
 		priority = 75
-	}))
+	}), "ass_edit_cheat_visible")
 
-	mark_edit_cheat_only(MenuHelper:AddSlider({
+	set_visible_when(MenuHelper:AddSlider({
 		id = "ass_level",
 		title = "ass_level_title",
 		desc = "ass_level_desc",
@@ -337,26 +341,26 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "AutoSkillSets_populate", function(m
 		display_precision = 0,
 		menu_id = MENU_ID,
 		priority = 70
-	}))
+	}), "ass_edit_cheat_visible")
 
-	mark_edit_cheat_only(MenuHelper:AddButton({
+	set_visible_when(MenuHelper:AddButton({
 		id = "ass_level_apply",
 		title = "ass_level_apply_title",
 		desc = "ass_level_apply_desc",
 		callback = "ass_apply_level",
 		menu_id = MENU_ID,
 		priority = 65
-	}))
+	}), "ass_edit_cheat_visible")
 
-	-- Infamy section
-	mark_edit_cheat_only(MenuHelper:AddDivider({
+	set_visible_when(MenuHelper:AddDivider({
 		id = "ass_div_infamy",
 		size = 16,
+		no_text = true,
 		menu_id = MENU_ID,
 		priority = 60
-	}))
+	}), "ass_edit_cheat_visible")
 
-	mark_edit_cheat_only(MenuHelper:AddSlider({
+	set_visible_when(MenuHelper:AddSlider({
 		id = "ass_infamy",
 		title = "ass_infamy_title",
 		desc = "ass_infamy_desc",
@@ -369,26 +373,26 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "AutoSkillSets_populate", function(m
 		display_precision = 0,
 		menu_id = MENU_ID,
 		priority = 55
-	}))
+	}), "ass_edit_cheat_visible")
 
-	mark_edit_cheat_only(MenuHelper:AddButton({
+	set_visible_when(MenuHelper:AddButton({
 		id = "ass_infamy_apply",
 		title = "ass_infamy_apply_title",
 		desc = "ass_infamy_apply_desc",
 		callback = "ass_apply_infamy",
 		menu_id = MENU_ID,
 		priority = 50
-	}))
+	}), "ass_edit_cheat_visible")
 
-	-- Skill Points section
-	mark_edit_cheat_only(MenuHelper:AddDivider({
+	set_visible_when(MenuHelper:AddDivider({
 		id = "ass_div_sp",
 		size = 16,
+		no_text = true,
 		menu_id = MENU_ID,
 		priority = 45
-	}))
+	}), "ass_edit_cheat_visible")
 
-	mark_edit_cheat_only(MenuHelper:AddSlider({
+	set_visible_when(MenuHelper:AddSlider({
 		id = "ass_sp",
 		title = "ass_sp_title",
 		desc = "ass_sp_desc",
@@ -401,16 +405,16 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "AutoSkillSets_populate", function(m
 		display_precision = 0,
 		menu_id = MENU_ID,
 		priority = 40
-	}))
+	}), "ass_edit_cheat_visible")
 
-	mark_edit_cheat_only(MenuHelper:AddButton({
+	set_visible_when(MenuHelper:AddButton({
 		id = "ass_sp_apply",
 		title = "ass_sp_apply_title",
 		desc = "ass_sp_apply_desc",
 		callback = "ass_apply_sp",
 		menu_id = MENU_ID,
 		priority = 35
-	}))
+	}), "ass_edit_cheat_visible")
 end)
 
 Hooks:Add("MenuManagerBuildCustomMenus", "AutoSkillSets_build", function(menu_manager, nodes)
