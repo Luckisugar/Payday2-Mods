@@ -1,18 +1,24 @@
 --[[
 	Auto Skill Sets — core logic
 	Save skill builds, auto-spend on level-up, restore after infamy.
-]]
 
-if _G.AutoSkillSets and AutoSkillSets._core_loaded then
-	return
-end
+	Note: this file is required from multiple hook_ids. Methods define once;
+	InstallHooks() is safe to call repeatedly (each hook is one-shot).
+]]
 
 _G.AutoSkillSets = _G.AutoSkillSets or {}
 local ASS = AutoSkillSets
-ASS._core_loaded = true
 ASS._path = ASS._path or ModPath
 ASS._data_path = ASS._data_path or (SavePath .. "auto_skill_sets.txt")
 ASS.SLOT_COUNT = 8
+
+if ASS._methods_defined then
+	if ASS.InstallHooks then
+		ASS:InstallHooks()
+	end
+	return
+end
+ASS._methods_defined = true
 
 function ASS:DefaultSettings()
 	return {
@@ -597,6 +603,27 @@ function ASS:ApplyCheatSkillPoints()
 	self:SystemMsg("Skill points set to " .. tostring(pts) .. ".")
 end
 
+function ASS:OnInfamyDetected(source)
+	if not self.settings then
+		self:Load()
+	end
+	if not self.settings.enabled then
+		return
+	end
+
+	-- Debounce: skilltree + MenuCallbackHandler both fire on classic infamy
+	local now = os.clock()
+	if self._last_infamy_detect_t and (now - self._last_infamy_detect_t) < 4 then
+		return
+	end
+	self._last_infamy_detect_t = now
+
+	if log then
+		log("[Auto Skill Sets] Infamy detected via " .. tostring(source or "?"))
+	end
+	self:ShowInfamyPrompt()
+end
+
 function ASS:ShowInfamyPrompt()
 	if not self.settings.enabled then
 		return
@@ -612,10 +639,27 @@ function ASS:ShowInfamyPrompt()
 	local slot_info = self:SlotLabel(self.settings.active_slot)
 	if not build or build.empty then
 		self:SystemMsg("Infamy reset — active slot empty, nothing to restore.")
+		-- Still popup so main-menu players see it (chat may be empty)
+		local function empty_popup()
+			if QuickMenu then
+				QuickMenu:new("Auto Skill Sets", "Infamy detected, but the active build slot is empty.\nSave a skill set first.", {
+					{ text = "OK", is_cancel_button = true }
+				}, true)
+			end
+		end
+		if DelayedCalls and DelayedCalls.Add then
+			DelayedCalls:Add("AutoSkillSets_infamy_empty", 1.25, empty_popup)
+		else
+			empty_popup()
+		end
 		return
 	end
 
 	local function delayed()
+		if not QuickMenu then
+			ASS:SystemMsg("Infamy reset — open Mod Options → Apply / Restore Skills.")
+			return
+		end
 		QuickMenu:new(
 			"Auto Skill Sets",
 			"Infamy reset your skills.\nRestore " .. slot_info .. "?",
@@ -641,8 +685,9 @@ function ASS:ShowInfamyPrompt()
 		)
 	end
 
+	-- Infamy flow immediately refreshes the main menu / Crime.net — wait for it
 	if DelayedCalls and DelayedCalls.Add then
-		DelayedCalls:Add("AutoSkillSets_infamy_prompt", 0.75, delayed)
+		DelayedCalls:Add("AutoSkillSets_infamy_prompt", 1.5, delayed)
 	else
 		delayed()
 	end
@@ -655,7 +700,6 @@ function ASS:OnPointsGained()
 	if not self:CanAutoApply() then
 		return
 	end
-	-- slight delay so level-up cascade finishes
 	local function run()
 		ASS:TryApply(false, "level_up")
 	end
@@ -666,30 +710,49 @@ function ASS:OnPointsGained()
 	end
 end
 
-ASS:Load()
-
--- Hooks (skill tree)
-if not ASS._hooks_skilltree then
-	ASS._hooks_skilltree = true
+function ASS:InstallHooks()
+	if not Hooks or not Hooks.PostHook then
+		return
+	end
 
 	if SkillTreeManager then
-		Hooks:PostHook(SkillTreeManager, "infamy_reset", "AutoSkillSets_infamy_reset", function(self)
-			ASS:ShowInfamyPrompt()
-		end)
-
-		Hooks:PostHook(SkillTreeManager, "level_up", "AutoSkillSets_level_up", function(self)
-			ASS:OnPointsGained()
-		end)
-
-		Hooks:PostHook(SkillTreeManager, "_aquire_points", "AutoSkillSets_aquire_points", function(self, points, selected_only)
-			if points and points > 0 then
+		if not self._hook_infamy_reset then
+			self._hook_infamy_reset = true
+			Hooks:PostHook(SkillTreeManager, "infamy_reset", "AutoSkillSets_infamy_reset", function()
+				ASS:OnInfamyDetected("SkillTreeManager:infamy_reset")
+			end)
+		end
+		if not self._hook_level_up then
+			self._hook_level_up = true
+			Hooks:PostHook(SkillTreeManager, "level_up", "AutoSkillSets_level_up", function()
 				ASS:OnPointsGained()
-			end
-		end)
+			end)
+		end
+		if not self._hook_aquire_points then
+			self._hook_aquire_points = true
+			Hooks:PostHook(SkillTreeManager, "_aquire_points", "AutoSkillSets_aquire_points", function(self, points, selected_only)
+				if points and points > 0 then
+					ASS:OnPointsGained()
+				end
+			end)
+		end
+	end
+
+	-- Actual "go infamous" button path (classic wipe). Prestige path does not wipe skills.
+	if MenuCallbackHandler then
+		if not self._hook_increase_infamous then
+			self._hook_increase_infamous = true
+			Hooks:PostHook(MenuCallbackHandler, "_increase_infamous", "AutoSkillSets_increase_infamous", function()
+				ASS:OnInfamyDetected("MenuCallbackHandler:_increase_infamous")
+			end)
+		end
+		if not self._hook_become_infamous then
+			self._hook_become_infamous = true
+			-- become_infamous only opens the confirm dialog; real work is _increase_infamous
+			-- Keep a post-hook for logging if confirm is skipped by other mods — no-op unless rank path differs
+		end
 	end
 end
 
--- Experience hooks reserved for future; level set uses manager methods directly.
-if not ASS._hooks_experience then
-	ASS._hooks_experience = true
-end
+ASS:Load()
+ASS:InstallHooks()

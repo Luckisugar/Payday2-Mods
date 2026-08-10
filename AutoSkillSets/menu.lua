@@ -39,8 +39,26 @@ if not ASS.settings then
 	ASS:Load()
 end
 
+-- Core may load after menumanager on some boot orders; pull it in so InstallHooks runs.
+if not ASS.InstallHooks then
+	local core = (ASS._path or ModPath) .. "core.lua"
+	local ok, err = pcall(dofile, core)
+	if not ok and log then
+		log("[Auto Skill Sets] failed to load core.lua: " .. tostring(err))
+	end
+end
+if ASS.InstallHooks then
+	ASS:InstallHooks()
+end
+
 Hooks:Add("LocalizationManagerPostInit", "AutoSkillSets_loc", function(loc)
 	loc:load_localization_file(ASS._path .. "loc/english.txt")
+end)
+
+Hooks:Add("MenuManagerInitialize", "AutoSkillSets_MenuInit_hooks", function(menu_manager)
+	if ASS.InstallHooks then
+		ASS:InstallHooks()
+	end
 end)
 
 local MENU_ID = "auto_skill_sets_menu"
