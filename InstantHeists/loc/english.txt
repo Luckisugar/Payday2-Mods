@@ -8,5 +8,7 @@
 	"ih_speed_timers_title": "Speed up timers",
 	"ih_speed_timers_desc": "Drills, vault/hack timers, mission waits (van, cook loops, NPC delays). Host gets best results.",
 	"ih_speed_mult_title": "Timer speed (x)",
-	"ih_speed_mult_desc": "How many times faster waits are. 1 = vanilla, 5 = five times faster, 20 = near-instant. Avoid pure zero (can softlock scripts)."
+	"ih_speed_mult_desc": "How many times faster waits are. 1 = vanilla, 5 = five times faster, 20 = near-instant. Avoid pure zero (can softlock scripts).",
+	"ih_crouch_only_title": "Only while crouching",
+	"ih_crouch_only_desc": "Bypass requirements and timer speed only apply while you are crouched. Stand up = vanilla rules again."
 }

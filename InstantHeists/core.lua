@@ -13,7 +13,8 @@ function IH:DefaultSettings()
 		enabled = true,
 		bypass_requirements = true,
 		speed_timers = true,
-		speed_multiplier = 5
+		speed_multiplier = 5,
+		crouch_only = false
 	}
 end
 
@@ -44,12 +45,39 @@ function IH:IsEnabled()
 	return self.settings and self.settings.enabled == true
 end
 
+--- Local player crouching (ducking).
+function IH:IsCrouching()
+	local player = managers.player and managers.player:player_unit()
+	if not alive(player) then
+		return false
+	end
+	local state = player:movement() and player:movement():current_state()
+	if state and state.ducking then
+		return state:ducking() == true
+	end
+	if state and state._state_data then
+		return state._state_data.ducking == true
+	end
+	return false
+end
+
+--- Master gate: enabled, and crouching if crouch_only is on.
+function IH:CheatsActive()
+	if not self:IsEnabled() then
+		return false
+	end
+	if self.settings.crouch_only then
+		return self:IsCrouching()
+	end
+	return true
+end
+
 function IH:BypassOn()
-	return self:IsEnabled() and self.settings.bypass_requirements == true
+	return self:CheatsActive() and self.settings.bypass_requirements == true
 end
 
 function IH:TimersOn()
-	return self:IsEnabled() and self.settings.speed_timers == true
+	return self:CheatsActive() and self.settings.speed_timers == true
 end
 
 --- How many times faster waits should be (5 = 5x faster = 1/5 duration).

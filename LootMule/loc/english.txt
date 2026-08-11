@@ -1,0 +1,13 @@
+{
+	"lm_menu_title": "Loot Mule",
+	"lm_menu_desc": "Stack as many bags as you want. Crouch to pick up. Throw distance is adjustable.",
+	"lm_enabled_title": "Enabled",
+	"lm_enabled_desc": "Master switch. If you still have bags stacked when you turn this off, you can keep throwing until empty.",
+	"lm_crouch_pickup_title": "Pickup only while crouching",
+	"lm_crouch_pickup_desc": "You must be crouched to grab another bag / body. Throwing works standing or crouching.",
+	"lm_throw_distance_title": "Throw distance (x)",
+	"lm_throw_distance_desc": "Multiplies how far bags fly when you throw. 1 = vanilla, higher = yeet, lower = soft drop.",
+	"lm_stack_hint_title": "Show stack count hint",
+	"lm_stack_hint_desc": "Brief on-screen hint with how many bags you are hauling.",
+	"hint_not_crouching": "Crouch to pick up bags (Loot Mule)"
+}

@@ -18,6 +18,7 @@ Personal SuperBLT mods for **PAYDAY 2**. Client-side QoL / stealth tooling. Not 
   - [Silent Assassin (fork)](#4-silent-assassin-fork)
   - [Auto Skill Sets](#5-auto-skill-sets)
   - [Instant Heists](#6-instant-heists)
+  - [Loot Mule](#7-loot-mule)
 - [Notes](#notes)
 - [License](#license)
 
@@ -99,16 +100,31 @@ Full **cheat** mod: skip equipment gates and speed up waits.
 
 > Host for reliable mission timers. Pure client-only lobbies will not always speed host-side scripts. This is an obvious cheat — expect desync / lobby drama online.
 
+**v1.1.0:** optional **Only while crouching** — bypass + timer cheats only apply when ducked.
+
+### 7) Loot Mule
+
+Carry **as many bags as you want** (stack, last in / first out). Not Carry Stacker — original Luckysugar mod.
+
+- **Crouch to pick up** (default on) — throwing works standing  
+- **Throw distance** slider (0.25×–10×, default 1×)  
+- Stack count hint on pickup  
+- Body bags stack too  
+- Options under **Mod Options → Loot Mule**
+
+> Throw distance scales best when you host (or solo). Obvious multi-bag cheat online.
+
 ## Notes
 
 - These are **mods**, not cheats aimed at public matchmaking advantage. Use common sense online.  
 - Silent Assassin updates from the original author may overwrite a Vortex install — keep this fork folder if you want the crouch / local options.  
 - Auto Skill Sets stores builds in SuperBLT’s save path (`auto_skill_sets.txt`), not only inside the mod folder.  
 - Instant Heists settings save to `instant_heists.txt` in the SuperBLT save path.  
+- Loot Mule settings save to `loot_mule.txt` in the SuperBLT save path.  
 - Game Lua dumps for research: [Payday-2-LuaJIT-Complete](https://github.com/steam-test1/Payday-2-LuaJIT-Complete) (reference only).
 
 ## License
 
-MIT for **original Luckisugar code** (Big Ammo, Omniscience+, Saw Stealth Conceal, Auto Skill Sets, Instant Heists).
+MIT for **original Luckisugar code** (Big Ammo, Omniscience+, Saw Stealth Conceal, Auto Skill Sets, Instant Heists, Loot Mule).
 
 Silent Assassin remains credit to **DrTachyon**; this repo ships a small fork with extra options. If the original license differs, treat that folder under the original author’s terms and contact them for redistribution questions.

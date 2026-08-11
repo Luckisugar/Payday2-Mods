@@ -37,6 +37,10 @@ Hooks:Add("MenuManagerInitialize", "InstantHeists_MenuInit", function(menu_manag
 		IH.settings.speed_multiplier = math.floor(item:value() + 0.5)
 		IH:Save()
 	end
+	MenuCallbackHandler.InstantHeists_CrouchOnly = function(self, item)
+		IH.settings.crouch_only = item:value() == "on"
+		IH:Save()
+	end
 	MenuCallbackHandler.InstantHeists_Save = function(self)
 		IH:Save()
 	end
