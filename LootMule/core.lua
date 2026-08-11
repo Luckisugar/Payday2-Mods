@@ -70,10 +70,28 @@ function LM:IsCrouching()
 	return false
 end
 
+--- True if the player already has a bag (vanilla carry and/or our stack).
+function LM:IsAlreadyCarrying()
+	if self:Count() > 0 then
+		return true
+	end
+	if managers.player and managers.player.is_carrying then
+		return managers.player:is_carrying() == true
+	end
+	return false
+end
+
+--- First bag: always OK while mod on (no crouch needed).
+--- Extra bags (stacking): crouch required only if crouch_pickup is on.
 function LM:CanPickupNow()
 	if not self:IsEnabled() then
 		return false
 	end
+	-- Bagless / first pickup: normal standing grab
+	if not self:IsAlreadyCarrying() then
+		return true
+	end
+	-- Already carrying → stacking. Optional crouch gate.
 	if self.settings.crouch_pickup then
 		return self:IsCrouching()
 	end

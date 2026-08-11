@@ -3,7 +3,7 @@
 	"description": "Carry as many bags as you want. Pickup only while crouching. Throw distance slider. Last in, first out.",
 	"author": "Luckysugar",
 	"contact": "https://github.com/Luckisugar/Payday2-Mods",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"blt_version": 2,
 	"priority": 15,
 	"hooks": [
