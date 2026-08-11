@@ -37,6 +37,10 @@ Hooks:Add("MenuManagerInitialize", "LootMule_MenuInit", function(menu_manager)
 		LM.settings.show_stack_hint = item:value() == "on"
 		LM:Save()
 	end
+	MenuCallbackHandler.LootMule_UnlimitedBodyBags = function(self, item)
+		LM.settings.unlimited_body_bags = item:value() == "on"
+		LM:Save()
+	end
 	MenuCallbackHandler.LootMule_Save = function(self)
 		LM:Save()
 	end

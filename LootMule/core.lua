@@ -14,7 +14,8 @@ function LM:DefaultSettings()
 		enabled = true,
 		crouch_pickup = true,
 		throw_distance = 1.0,
-		show_stack_hint = true
+		show_stack_hint = true,
+		unlimited_body_bags = true
 	}
 end
 
@@ -86,12 +87,16 @@ function LM:ThrowMult()
 	return math.max(0.25, math.min(10, tonumber(self.settings.throw_distance) or 1))
 end
 
+function LM:UnlimitedBodyBags()
+	return self:IsEnabled() and self.settings.unlimited_body_bags == true
+end
+
 function LM:Count()
 	return self.stack and #self.stack or 0
 end
 
 function LM:AddCarry(cdata)
-	if not cdata then
+	if not cdata or not cdata.carry_id then
 		return
 	end
 	table.insert(self.stack, {
@@ -101,7 +106,7 @@ function LM:AddCarry(cdata)
 		has_dye_pack = cdata.has_dye_pack,
 		dye_value_multiplier = cdata.dye_value_multiplier
 	})
-	self:Hint()
+	self:HudRefresh()
 end
 
 function LM:RemoveTop()
@@ -109,15 +114,29 @@ function LM:RemoveTop()
 		return nil
 	end
 	local cdata = table.remove(self.stack, #self.stack)
-	self:Hint()
+	self:HudRefresh()
 	return cdata
 end
 
 function LM:ClearStack()
 	self.stack = {}
+	self:HudRefresh()
 end
 
-function LM:Hint()
+--- Stack count: special equipment icon (CSR style) + optional hint text.
+function LM:HudRefresh()
+	if managers.hud and managers.hud.remove_special_equipment then
+		managers.hud:remove_special_equipment("lootmule_stack")
+		local n = self:Count()
+		if n > 0 and managers.hud.add_special_equipment then
+			managers.hud:add_special_equipment({
+				id = "lootmule_stack",
+				icon = "pd2_loot",
+				amount = n
+			})
+		end
+	end
+
 	if not self.settings or not self.settings.show_stack_hint then
 		return
 	end

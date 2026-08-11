@@ -9,5 +9,7 @@
 	"lm_throw_distance_desc": "Multiplies how far bags fly when you throw. 1 = vanilla, higher = yeet, lower = soft drop.",
 	"lm_stack_hint_title": "Show stack count hint",
 	"lm_stack_hint_desc": "Brief on-screen hint with how many bags you are hauling.",
+	"lm_unlimited_body_bags_title": "Unlimited body bags",
+	"lm_unlimited_body_bags_desc": "Bag bodies without running out of body bags. Still need the body bag skill. Off = vanilla bag charges.",
 	"hint_not_crouching": "Crouch to pick up bags (Loot Mule)"
 }

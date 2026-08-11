@@ -43,6 +43,15 @@
 			"callback": "LootMule_StackHint",
 			"value": "show_stack_hint",
 			"default_value": true
+		},
+		{
+			"type": "toggle",
+			"id": "lm_unlimited_body_bags",
+			"title": "lm_unlimited_body_bags_title",
+			"description": "lm_unlimited_body_bags_desc",
+			"callback": "LootMule_UnlimitedBodyBags",
+			"value": "unlimited_body_bags",
+			"default_value": true
 		}
 	]
 }
