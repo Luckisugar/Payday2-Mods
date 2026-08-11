@@ -13,7 +13,8 @@ function LM:DefaultSettings()
 	return {
 		enabled = true,
 		crouch_pickup = true,
-		throw_distance = 1.0,
+		throw_distance = 1.69,
+		dump_all = true,
 		show_stack_hint = true,
 		unlimited_body_bags = true
 	}
@@ -31,8 +32,11 @@ function LM:Load()
 			end
 		end
 	end
-	local td = tonumber(self.settings.throw_distance) or 1
-	self.settings.throw_distance = math.max(0.25, math.min(10, td))
+	local td = tonumber(self.settings.throw_distance) or 1.69
+	self.settings.throw_distance = math.max(0.25, math.min(10, math.floor(td * 100 + 0.5) / 100))
+	if self.settings.dump_all == nil then
+		self.settings.dump_all = true
+	end
 end
 
 function LM:Save()
@@ -102,7 +106,12 @@ function LM:ThrowMult()
 	if not self:IsEnabled() then
 		return 1
 	end
-	return math.max(0.25, math.min(10, tonumber(self.settings.throw_distance) or 1))
+	return math.max(0.25, math.min(10, tonumber(self.settings.throw_distance) or 1.69))
+end
+
+--- One G throw = entire stack flies out. Off = LIFO one bag per throw.
+function LM:DumpAllOnThrow()
+	return self:IsEnabled() and self.settings.dump_all == true
 end
 
 function LM:UnlimitedBodyBags()

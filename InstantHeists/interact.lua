@@ -181,3 +181,98 @@ if MultipleChoiceInteractionExt then
 		return true
 	end
 end
+
+--[[
+	Shaped charges / drills / saws on mission doors:
+	MissionDoorDeviceInteractionExt:result_place_mission_door_device always
+	calls remove_equipment / remove_special. Vanilla never reaches that without
+	the deployable; with bypass we do → nil equipment crash in PlayerManager.
+	Consume only if owned.
+]]
+if MissionDoorDeviceInteractionExt then
+	local orig_result_place = MissionDoorDeviceInteractionExt.result_place_mission_door_device
+	function MissionDoorDeviceInteractionExt:result_place_mission_door_device(placed)
+		if not IH:BypassOn() then
+			return orig_result_place(self, placed)
+		end
+		if not placed then
+			return
+		end
+		local td = self._tweak_data
+		if not td then
+			return
+		end
+		if td.equipment_consume and td.special_equipment then
+			if managers.player:has_special_equipment(td.special_equipment) then
+				managers.player:remove_special(td.special_equipment)
+			end
+		end
+		if td.deployable_consume and td.required_deployable then
+			local slot = td.slot or 1
+			if managers.player:has_deployable_left(td.required_deployable, slot) then
+				managers.player:remove_equipment(td.required_deployable, slot)
+			end
+			if not managers.player:selected_equipment() then
+				managers.player:switch_equipment()
+			end
+		end
+	end
+end
+
+-- UseInteractionExt also remove_equipment / remove_special on consume flags.
+-- Safe path when bypass allowed the interact without owning the item.
+if UseInteractionExt then
+	local orig_use_interact = UseInteractionExt.interact
+	function UseInteractionExt:interact(player)
+		if not IH:BypassOn() then
+			return orig_use_interact(self, player)
+		end
+		if not self:can_interact(player) then
+			return
+		end
+
+		local td = self._tweak_data
+		local has_special = not td.special_equipment
+			or td.dont_need_equipment
+			or managers.player:has_special_equipment(td.special_equipment)
+		local has_deployable = not td.required_deployable
+			or managers.player:has_deployable_left(td.required_deployable, td.slot or 1)
+
+		-- Owned everything → vanilla (consumes correctly).
+		if has_special and has_deployable then
+			return orig_use_interact(self, player)
+		end
+
+		-- Missing gear: success without crashing on remove_*.
+		UseInteractionExt.super.interact(self, player)
+
+		if td.equipment_consume and td.special_equipment and managers.player:has_special_equipment(td.special_equipment) then
+			managers.player:remove_special(td.special_equipment)
+		end
+		if td.deployable_consume and td.required_deployable and managers.player:has_deployable_left(td.required_deployable, td.slot or 1) then
+			managers.player:remove_equipment(td.required_deployable, td.slot or 1)
+		end
+		if td.sound_event and alive(player) and player.sound then
+			player:sound():play(td.sound_event)
+		end
+		self:remove_interact()
+		if self._unit:damage() then
+			self._unit:damage():run_sequence_simple("interact", { unit = player })
+		end
+		if managers.network and managers.network:session() then
+			managers.network:session():send_to_peers_synched("sync_interacted", self._unit, -2, self.tweak_data, 1)
+		end
+		if self._global_event then
+			managers.mission:call_global_event(self._global_event, player)
+		end
+		if self._achievement_stat then
+			managers.achievment:award_progress(self._achievement_stat)
+		elseif self._achievement_id then
+			managers.achievment:award(self._achievement_id)
+		end
+		if not self.keep_active_after_interaction then
+			self:set_active(false)
+		end
+		return true
+	end
+end

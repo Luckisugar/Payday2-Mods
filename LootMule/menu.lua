@@ -33,6 +33,10 @@ Hooks:Add("MenuManagerInitialize", "LootMule_MenuInit", function(menu_manager)
 		LM.settings.throw_distance = math.floor(item:value() * 100 + 0.5) / 100
 		LM:Save()
 	end
+	MenuCallbackHandler.LootMule_DumpAll = function(self, item)
+		LM.settings.dump_all = item:value() == "on"
+		LM:Save()
+	end
 	MenuCallbackHandler.LootMule_StackHint = function(self, item)
 		LM.settings.show_stack_hint = item:value() == "on"
 		LM:Save()

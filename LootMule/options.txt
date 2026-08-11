@@ -30,10 +30,19 @@
 			"description": "lm_throw_distance_desc",
 			"callback": "LootMule_ThrowDistance",
 			"value": "throw_distance",
-			"default_value": 1,
+			"default_value": 1.69,
 			"min": 0.25,
 			"max": 10,
-			"step": 0.25
+			"step": 0.01
+		},
+		{
+			"type": "toggle",
+			"id": "lm_dump_all",
+			"title": "lm_dump_all_title",
+			"description": "lm_dump_all_desc",
+			"callback": "LootMule_DumpAll",
+			"value": "dump_all",
+			"default_value": true
 		},
 		{
 			"type": "toggle",

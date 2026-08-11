@@ -76,15 +76,37 @@ function PlayerManager:drop_carry(...)
 		return master_drop_carry(self, ...)
 	end
 
-	-- Drop the currently registered bag first (CSR order).
+	-- Dump entire stack in one G press (optional feature).
+	if LM:DumpAllOnThrow() and LM:Count() > 1 then
+		local guard = 0
+		while guard < 200 do
+			guard = guard + 1
+			if not self:is_carrying() then
+				if LM:Count() > 0 then
+					reapply_top_carry(self)
+				else
+					break
+				end
+			end
+			if not self:is_carrying() then
+				break
+			end
+			master_drop_carry(self, ...)
+			if LM:Count() > 0 then
+				LM:RemoveTop()
+			end
+		end
+		LM:ClearStack()
+		return
+	end
+
+	-- One bag at a time (LIFO): drop current, pop, re-equip next.
 	master_drop_carry(self, ...)
 
-	-- Pop after drop so verify_bag drop phase sees consistent state.
 	if LM:Count() > 0 then
 		LM:RemoveTop()
 	end
 
-	-- Still holding more? Re-equip next without stacking again.
 	if LM:Count() > 0 then
 		reapply_top_carry(self)
 	end

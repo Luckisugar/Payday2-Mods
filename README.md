@@ -100,18 +100,20 @@ Full **cheat** mod: skip equipment gates and speed up waits.
 
 > Host for reliable mission timers. Pure client-only lobbies will not always speed host-side scripts. This is an obvious cheat — expect desync / lobby drama online.
 
-**v1.1.0:** optional **Only while crouching** — bypass + timer cheats only apply when ducked.
+**v1.1.0:** optional **Only while crouching** — bypass + timer cheats only apply when ducked.  
+**v1.1.1:** fixed crash planting free shaped charges / mission-door deployables with none owned.
 
 ### 7) Loot Mule
 
 Carry **as many bags as you want** (stack, last in / first out). Not Carry Stacker — original Luckysugar mod.
 
-- **Crouch to pick up** (default on) — throwing works standing  
-- **Throw distance** slider (0.25×–10×, default 1×)  
+- **First bag standing**; **crouch to stack more** (default on) — throw always works standing  
+- **Throw distance** slider (0.25×–10×, default **1.69**, step **0.01**)  
+- **Dump entire stack on throw** (default on) — one G = pile dump; off = LIFO one bag  
 - Stack count HUD + optional hint  
-- Body bags stack too; **unlimited body bags** default on  
+- **Unlimited body bags** default on; bag anti-cheat bypass so stacks are not eaten  
 - Options under **Mod Options → Loot Mule**  
-- **v1.0.1:** fixed interaction hook crash that blocked stacking entirely
+- **v1.0.4:** dump-all option + throw default 1.69
 
 > Throw distance scales best when you host (or solo). Obvious multi-bag cheat online.
 
