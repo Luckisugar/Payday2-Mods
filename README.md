@@ -108,9 +108,10 @@ Carry **as many bags as you want** (stack, last in / first out). Not Carry Stack
 
 - **Crouch to pick up** (default on) — throwing works standing  
 - **Throw distance** slider (0.25×–10×, default 1×)  
-- Stack count hint on pickup  
-- Body bags stack too  
-- Options under **Mod Options → Loot Mule**
+- Stack count HUD + optional hint  
+- Body bags stack too; **unlimited body bags** default on  
+- Options under **Mod Options → Loot Mule**  
+- **v1.0.1:** fixed interaction hook crash that blocked stacking entirely
 
 > Throw distance scales best when you host (or solo). Obvious multi-bag cheat online.
 
