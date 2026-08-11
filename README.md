@@ -101,7 +101,8 @@ Full **cheat** mod: skip equipment gates and speed up waits.
 > Host for reliable mission timers. Pure client-only lobbies will not always speed host-side scripts. This is an obvious cheat — expect desync / lobby drama online.
 
 **v1.1.0:** optional **Only while crouching** — bypass + timer cheats only apply when ducked.  
-**v1.1.1:** fixed crash planting free shaped charges / mission-door deployables with none owned.
+**v1.1.1:** fixed crash planting free shaped charges / mission-door deployables with none owned.  
+**v1.1.2:** **Speed mission script delays** option (default off) so Bain/radio reminder VO does not spam; drills/vaults still speed under the main timer toggle.
 
 ### 7) Loot Mule
 

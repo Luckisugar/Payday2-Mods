@@ -13,6 +13,9 @@ function IH:DefaultSettings()
 		enabled = true,
 		bypass_requirements = true,
 		speed_timers = true,
+		-- MissionScriptElement base/element delays (dialogue reminder loops, staged waits).
+		-- Off by default: speeding these makes Bain/radio lines spam (e.g. Car Shop C4).
+		speed_mission_delays = false,
 		speed_multiplier = 5,
 		crouch_only = false
 	}
@@ -31,6 +34,9 @@ function IH:Load()
 		end
 	end
 	self.settings.speed_multiplier = math.max(1, math.min(20, tonumber(self.settings.speed_multiplier) or 5))
+	if self.settings.speed_mission_delays == nil then
+		self.settings.speed_mission_delays = false
+	end
 end
 
 function IH:Save()
@@ -80,6 +86,11 @@ function IH:TimersOn()
 	return self:CheatsActive() and self.settings.speed_timers == true
 end
 
+--- Separate gate for MissionScriptElement delays (not drills / ElementTimer).
+function IH:MissionDelaysOn()
+	return self:TimersOn() and self.settings.speed_mission_delays == true
+end
+
 --- How many times faster waits should be (5 = 5x faster = 1/5 duration).
 function IH:SpeedMult()
 	if not self:TimersOn() then
@@ -99,6 +110,45 @@ function IH:ScaleTime(t)
 		return t
 	end
 	return math.max(0.05, t / m)
+end
+
+--- Scale mission script delays only when that option is on.
+function IH:ScaleMissionDelay(t)
+	if not self:MissionDelaysOn() then
+		return t
+	end
+	return self:ScaleTime(t)
+end
+
+--- True if this mission element is (or targets) dialogue / radio VO.
+function IH:IsDialogueElement(element)
+	if not element then
+		return false
+	end
+	local values = element._values
+	if values then
+		if values.dialogue and values.dialogue ~= "none" then
+			return true
+		end
+		if values.can_not_be_muted ~= nil and values.dialogue then
+			return true
+		end
+	end
+	local name = element._editor_name
+	if (not name or name == "") and element.editor_name then
+		name = element:editor_name()
+	end
+	if not name then
+		return false
+	end
+	name = string.lower(tostring(name))
+	return string.find(name, "dialog", 1, true)
+		or string.find(name, "dialogue", 1, true)
+		or string.find(name, "bain", 1, true)
+		or string.find(name, "narrator", 1, true)
+		or string.find(name, "radio", 1, true)
+		or string.find(name, "vo_", 1, true)
+		or string.find(name, "_vo", 1, true)
 end
 
 if not IH.settings then

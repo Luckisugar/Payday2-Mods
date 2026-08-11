@@ -33,6 +33,10 @@ Hooks:Add("MenuManagerInitialize", "InstantHeists_MenuInit", function(menu_manag
 		IH.settings.speed_timers = item:value() == "on"
 		IH:Save()
 	end
+	MenuCallbackHandler.InstantHeists_SpeedMissionDelays = function(self, item)
+		IH.settings.speed_mission_delays = item:value() == "on"
+		IH:Save()
+	end
 	MenuCallbackHandler.InstantHeists_SpeedMult = function(self, item)
 		IH.settings.speed_multiplier = math.floor(item:value() + 0.5)
 		IH:Save()

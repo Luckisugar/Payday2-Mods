@@ -37,6 +37,15 @@
 			"default_value": true
 		},
 		{
+			"type": "toggle",
+			"id": "ih_speed_mission_delays",
+			"title": "ih_speed_mission_delays_title",
+			"description": "ih_speed_mission_delays_desc",
+			"callback": "InstantHeists_SpeedMissionDelays",
+			"value": "speed_mission_delays",
+			"default_value": false
+		},
+		{
 			"type": "slider",
 			"id": "ih_speed_mult",
 			"title": "ih_speed_mult_title",
