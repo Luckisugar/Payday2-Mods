@@ -1,0 +1,52 @@
+{
+	"menu_id": "instant_heists_options",
+	"parent_menu_id": "blt_options",
+	"title": "ih_menu_title",
+	"description": "ih_menu_desc",
+	"back_callback": "InstantHeists_Save",
+	"items": [
+		{
+			"type": "toggle",
+			"id": "ih_enabled",
+			"title": "ih_enabled_title",
+			"description": "ih_enabled_desc",
+			"callback": "InstantHeists_Enabled",
+			"value": "enabled",
+			"default_value": true
+		},
+		{
+			"type": "divider",
+			"size": 12
+		},
+		{
+			"type": "toggle",
+			"id": "ih_bypass",
+			"title": "ih_bypass_title",
+			"description": "ih_bypass_desc",
+			"callback": "InstantHeists_Bypass",
+			"value": "bypass_requirements",
+			"default_value": true
+		},
+		{
+			"type": "toggle",
+			"id": "ih_speed_timers",
+			"title": "ih_speed_timers_title",
+			"description": "ih_speed_timers_desc",
+			"callback": "InstantHeists_SpeedTimers",
+			"value": "speed_timers",
+			"default_value": true
+		},
+		{
+			"type": "slider",
+			"id": "ih_speed_mult",
+			"title": "ih_speed_mult_title",
+			"description": "ih_speed_mult_desc",
+			"callback": "InstantHeists_SpeedMult",
+			"value": "speed_multiplier",
+			"default_value": 5,
+			"min": 1,
+			"max": 20,
+			"step": 1
+		}
+	]
+}

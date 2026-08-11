@@ -17,6 +17,7 @@ Personal SuperBLT mods for **PAYDAY 2**. Client-side QoL / stealth tooling. Not 
   - [Saw Stealth Conceal](#3-saw-stealth-conceal)
   - [Silent Assassin (fork)](#4-silent-assassin-fork)
   - [Auto Skill Sets](#5-auto-skill-sets)
+  - [Instant Heists](#6-instant-heists)
 - [Notes](#notes)
 - [License](#license)
 
@@ -86,15 +87,28 @@ Saves skill builds and re-spends them after **infamy** / level-ups so you are no
 
 > Cheat restore / Edit (Cheat) can trip skill-point detectors and look bad online. Use at your own risk.
 
+### 6) Instant Heists
+
+Full **cheat** mod: skip equipment gates and speed up waits.
+
+- **Bypass requirements** — keycards, shaped charges, ECM, cook chemicals, crowbars, etc.  
+- **Consume if owned** — if you already have the required item, it is still consumed; if you do not, the interact works anyway  
+- **Timer speed** — drills, vault/hack GUIs, mission timers, element delays (van, cook loops, staged waits)  
+- Global speed multiplier (default **5×**, slider 1–20)  
+- Options under **Mod Options → Instant Heists**
+
+> Host for reliable mission timers. Pure client-only lobbies will not always speed host-side scripts. This is an obvious cheat — expect desync / lobby drama online.
+
 ## Notes
 
 - These are **mods**, not cheats aimed at public matchmaking advantage. Use common sense online.  
 - Silent Assassin updates from the original author may overwrite a Vortex install — keep this fork folder if you want the crouch / local options.  
 - Auto Skill Sets stores builds in SuperBLT’s save path (`auto_skill_sets.txt`), not only inside the mod folder.  
+- Instant Heists settings save to `instant_heists.txt` in the SuperBLT save path.  
 - Game Lua dumps for research: [Payday-2-LuaJIT-Complete](https://github.com/steam-test1/Payday-2-LuaJIT-Complete) (reference only).
 
 ## License
 
-MIT for **original Luckisugar code** (Big Ammo, Omniscience+, Saw Stealth Conceal, Auto Skill Sets).
+MIT for **original Luckisugar code** (Big Ammo, Omniscience+, Saw Stealth Conceal, Auto Skill Sets, Instant Heists).
 
 Silent Assassin remains credit to **DrTachyon**; this repo ships a small fork with extra options. If the original license differs, treat that folder under the original author’s terms and contact them for redistribution questions.

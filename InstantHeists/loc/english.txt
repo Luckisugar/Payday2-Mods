@@ -1,0 +1,12 @@
+{
+	"ih_menu_title": "Instant Heists",
+	"ih_menu_desc": "Skip equipment requirements and speed up waits. Full cheat mod.",
+	"ih_enabled_title": "Enabled",
+	"ih_enabled_desc": "Master switch for Instant Heists.",
+	"ih_bypass_title": "Bypass interaction requirements",
+	"ih_bypass_desc": "Interact without keycards, shaped charges, ECM, cook chemicals, etc. If you already have the item, it is still consumed.",
+	"ih_speed_timers_title": "Speed up timers",
+	"ih_speed_timers_desc": "Drills, vault/hack timers, mission waits (van, cook loops, NPC delays). Host gets best results.",
+	"ih_speed_mult_title": "Timer speed (x)",
+	"ih_speed_mult_desc": "How many times faster waits are. 1 = vanilla, 5 = five times faster, 20 = near-instant. Avoid pure zero (can softlock scripts)."
+}
