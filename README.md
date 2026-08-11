@@ -102,7 +102,8 @@ Full **cheat** mod: skip equipment gates and speed up waits.
 
 **v1.1.0:** optional **Only while crouching** — bypass + timer cheats only apply when ducked.  
 **v1.1.1:** fixed crash planting free shaped charges / mission-door deployables with none owned.  
-**v1.1.2:** **Speed mission script delays** option (default off) so Bain/radio reminder VO does not spam; drills/vaults still speed under the main timer toggle.
+**v1.1.2:** **Speed mission script delays** option (default off) so Bain/radio reminder VO does not spam; drills/vaults still speed under the main timer toggle.  
+**v1.1.3:** VHUD+ compat — pagers/dangerous holds stay vanilla; hold-to-interact scaling clamps so auto-hold + drop-bag cancel still works.
 
 ### 7) Loot Mule
 

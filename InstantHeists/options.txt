@@ -46,6 +46,33 @@
 			"default_value": false
 		},
 		{
+			"type": "toggle",
+			"id": "ih_speed_interact",
+			"title": "ih_speed_interact_title",
+			"description": "ih_speed_interact_desc",
+			"callback": "InstantHeists_SpeedInteract",
+			"value": "speed_interact",
+			"default_value": true
+		},
+		{
+			"type": "toggle",
+			"id": "ih_protect_dangerous",
+			"title": "ih_protect_dangerous_title",
+			"description": "ih_protect_dangerous_desc",
+			"callback": "InstantHeists_ProtectDangerous",
+			"value": "protect_dangerous_interact",
+			"default_value": true
+		},
+		{
+			"type": "toggle",
+			"id": "ih_vhud_compat",
+			"title": "ih_vhud_compat_title",
+			"description": "ih_vhud_compat_desc",
+			"callback": "InstantHeists_VHUDCompat",
+			"value": "vhud_compat",
+			"default_value": true
+		},
+		{
 			"type": "slider",
 			"id": "ih_speed_mult",
 			"title": "ih_speed_mult_title",

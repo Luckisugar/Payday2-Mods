@@ -16,6 +16,12 @@ function IH:DefaultSettings()
 		-- MissionScriptElement base/element delays (dialogue reminder loops, staged waits).
 		-- Off by default: speeding these makes Bain/radio lines spam (e.g. Car Shop C4).
 		speed_mission_delays = false,
+		-- Hold-to-interact bar (locks, bags, …). Separate so VHUD+ lock-mode can stay sane.
+		speed_interact = true,
+		-- Never scale pagers / other "dangerous cancel = alarm" holds (VHUD+ auto-hold).
+		protect_dangerous_interact = true,
+		-- When VanillaHUD Plus is present, keep scaled timers >= its lock threshold.
+		vhud_compat = true,
 		speed_multiplier = 5,
 		crouch_only = false
 	}
@@ -36,6 +42,15 @@ function IH:Load()
 	self.settings.speed_multiplier = math.max(1, math.min(20, tonumber(self.settings.speed_multiplier) or 5))
 	if self.settings.speed_mission_delays == nil then
 		self.settings.speed_mission_delays = false
+	end
+	if self.settings.speed_interact == nil then
+		self.settings.speed_interact = true
+	end
+	if self.settings.protect_dangerous_interact == nil then
+		self.settings.protect_dangerous_interact = true
+	end
+	if self.settings.vhud_compat == nil then
+		self.settings.vhud_compat = true
 	end
 end
 
@@ -91,6 +106,11 @@ function IH:MissionDelaysOn()
 	return self:TimersOn() and self.settings.speed_mission_delays == true
 end
 
+--- Hold-to-interact bar speed (BaseInteractionExt:_get_timer).
+function IH:InteractSpeedOn()
+	return self:TimersOn() and self.settings.speed_interact == true
+end
+
 --- How many times faster waits should be (5 = 5x faster = 1/5 duration).
 function IH:SpeedMult()
 	if not self:TimersOn() then
@@ -118,6 +138,77 @@ function IH:ScaleMissionDelay(t)
 		return t
 	end
 	return self:ScaleTime(t)
+end
+
+--[[
+	Dangerous holds: interrupt/cancel can raise alarm or fail stealth.
+	VanillaHUD Plus (and similar) auto-hold these and map G/drop-bag to cancel
+	with a warning. Speeding them below VHUD's MIN_TIMER_DURATION disables that.
+]]
+IH.DANGEROUS_INTERACT = {
+	corpse_alarm_pager = true,
+	-- revive/free are long holds; keep vanilla so lock + cancel UX stays intact
+	revive = true,
+	free = true
+}
+
+function IH:IsDangerousInteract(interaction)
+	if not interaction then
+		return false
+	end
+	local id = interaction.tweak_data
+	if type(id) == "string" and self.DANGEROUS_INTERACT[id] then
+		return true
+	end
+	if type(id) == "string" and string.find(id, "pager", 1, true) then
+		return true
+	end
+	return false
+end
+
+--- VanillaHUD Plus lock threshold (default 5s). Falls back if VHUD missing/API differs.
+function IH:VHUDMinTimerDuration()
+	if not self.settings or self.settings.vhud_compat == false then
+		return nil
+	end
+	if not _G.VHUDPlus or not VHUDPlus.getSetting then
+		return nil
+	end
+	local ok, val = pcall(function()
+		return VHUDPlus:getSetting({ "INTERACTION", "MIN_TIMER_DURATION" }, 5)
+	end)
+	if ok and type(val) == "number" and val > 0 then
+		return val
+	end
+	-- VHUD present but setting unread — still use common default so lock mode works
+	if _G.VHUDPlus then
+		return 5
+	end
+	return nil
+end
+
+--- Scale hold-to-interact duration with VHUD / pager safety.
+--- original_t = vanilla timer before any Instant Heists scaling.
+function IH:ScaleInteractTime(interaction, original_t)
+	if not original_t or original_t <= 0 then
+		return original_t
+	end
+	if not self:InteractSpeedOn() then
+		return original_t
+	end
+	if self.settings.protect_dangerous_interact ~= false and self:IsDangerousInteract(interaction) then
+		return original_t
+	end
+
+	local scaled = self:ScaleTime(original_t)
+
+	-- Keep long holds eligible for VHUD lock-mode (timer >= MIN_TIMER_DURATION).
+	local min_lock = self:VHUDMinTimerDuration()
+	if min_lock and original_t >= min_lock and scaled < min_lock then
+		scaled = min_lock
+	end
+
+	return scaled
 end
 
 --- True if this mission element is (or targets) dialogue / radio VO.

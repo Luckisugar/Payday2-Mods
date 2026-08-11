@@ -105,12 +105,22 @@ function BaseInteractionExt:can_select(player, locator)
 	return true
 end
 
--- Hold-to-interact duration (pick locks, bags, etc.)
+--[[
+	Hold-to-interact duration (pick locks, bags, etc.)
+
+	VHUD+ (and similar) auto-hold when timer >= MIN_TIMER_DURATION and remap
+	drop-bag/G to cancel with an alarm warning. Blind ScaleTime() made pagers
+	and long holds fall under that threshold → lock/cancel UI never armed.
+	ScaleInteractTime() skips dangerous IDs and clamps for VHUD when present.
+]]
 local orig_get_timer = BaseInteractionExt._get_timer
 function BaseInteractionExt:_get_timer()
 	local t = orig_get_timer(self)
 	if not t then
 		return t
+	end
+	if IH.ScaleInteractTime then
+		return IH:ScaleInteractTime(self, t)
 	end
 	return IH:ScaleTime(t)
 end
