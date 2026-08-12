@@ -19,6 +19,7 @@ Personal SuperBLT mods for **PAYDAY 2**. Client-side QoL / stealth tooling. Not 
   - [Auto Skill Sets](#5-auto-skill-sets)
   - [Instant Heists](#6-instant-heists)
   - [Loot Mule](#7-loot-mule)
+  - [Instant Restart](#8-instant-restart)
 - [Notes](#notes)
 - [License](#license)
 
@@ -119,6 +120,22 @@ Carry **as many bags as you want** (stack, last in / first out). Not Carry Stack
 
 > Throw distance scales best when you host (or solo). Obvious multi-bag cheat online.
 
+### 8) Instant Restart
+
+**Host hotkey** to restart the current heist, **rebuy last preplan + mission assets**, and **auto-start past briefing** into map load.
+
+- Not Esc → Restart / FishTaco (those only dump you on briefing)  
+- Bind: **Options → Mod Keybinds** → **Instant Restart (reload heist)**  
+- **Rebuy** snapshots what you bought to disk before restart, then:  
+  - **Preplanning heists** — stock rebuy path (+ force-reserve if soft-blocked)  
+  - **Mission-asset heists** (e.g. Nightclub) — re-unlock last asset IDs, else **Buy All Assets**  
+- **SYSTEM chat** announcements (not under your Steam name); peers with this mod get SYSTEM too  
+- Safety: host-only, peer synched/outfit/streaming checks, cooldown, pcall guards, auto-start timeout  
+- **Does not skip map loading**  
+- Settings: `instant_restart.txt` · debug log: `instant_restart.log` · asset snapshot: `instant_restart_assets.json`  
+
+> Host only. Blocked while a peer is still loading (reduces blackscreens).
+
 ## Notes
 
 - These are **mods**, not cheats aimed at public matchmaking advantage. Use common sense online.  
@@ -126,10 +143,11 @@ Carry **as many bags as you want** (stack, last in / first out). Not Carry Stack
 - Auto Skill Sets stores builds in SuperBLT’s save path (`auto_skill_sets.txt`), not only inside the mod folder.  
 - Instant Heists settings save to `instant_heists.txt` in the SuperBLT save path.  
 - Loot Mule settings save to `loot_mule.txt` in the SuperBLT save path.  
+- Instant Restart settings save to `instant_restart.txt` in the SuperBLT save path.  
 - Game Lua dumps for research: [Payday-2-LuaJIT-Complete](https://github.com/steam-test1/Payday-2-LuaJIT-Complete) (reference only).
 
 ## License
 
-MIT for **original Luckisugar code** (Big Ammo, Omniscience+, Saw Stealth Conceal, Auto Skill Sets, Instant Heists, Loot Mule).
+MIT for **original Luckisugar code** (Big Ammo, Omniscience+, Saw Stealth Conceal, Auto Skill Sets, Instant Heists, Loot Mule, Instant Restart).
 
 Silent Assassin remains credit to **DrTachyon**; this repo ships a small fork with extra options. If the original license differs, treat that folder under the original author’s terms and contact them for redistribution questions.

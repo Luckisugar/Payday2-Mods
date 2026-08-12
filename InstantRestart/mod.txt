@@ -1,0 +1,46 @@
+{
+	"name": "Instant Restart",
+	"description": "Host hotkey: restart heist, rebuy preplan + mission assets, auto-start past briefing. SYSTEM chat. Safety checks to reduce blackscreens.",
+	"author": "Luckisugar",
+	"contact": "https://github.com/Luckisugar/Payday2-Mods",
+	"version": "1.3.0",
+	"blt_version": 2,
+	"priority": 15,
+	"hooks": [
+		{
+			"hook_id": "lib/managers/menumanager",
+			"script_path": "menu.lua"
+		},
+		{
+			"hook_id": "lib/states/ingamewaitingforplayers",
+			"script_path": "waiting.lua"
+		},
+		{
+			"hook_id": "lib/managers/menu/missionbriefinggui",
+			"script_path": "briefing.lua"
+		},
+		{
+			"hook_id": "lib/managers/preplanningmanager",
+			"script_path": "briefing.lua"
+		},
+		{
+			"hook_id": "lib/managers/missionassetsmanager",
+			"script_path": "briefing.lua"
+		},
+		{
+			"hook_id": "lib/network/base/networkmanager",
+			"script_path": "network.lua"
+		}
+	],
+	"keybinds": [
+		{
+			"keybind_id": "instant_restart_reload",
+			"name": "Instant Restart (reload heist)",
+			"description": "Host only: restart current heist, rebuy assets/preplan, auto-start into map load.",
+			"script_path": "keybind.lua",
+			"run_in_menu": false,
+			"run_in_game": true,
+			"localized": false
+		}
+	]
+}
