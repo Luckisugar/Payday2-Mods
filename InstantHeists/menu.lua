@@ -57,6 +57,25 @@ Hooks:Add("MenuManagerInitialize", "InstantHeists_MenuInit", function(menu_manag
 		IH.settings.crouch_only = item:value() == "on"
 		IH:Save()
 	end
+	MenuCallbackHandler.InstantHeists_ProtectPuzzle = function(self, item)
+		IH.settings.protect_puzzle_timers = item:value() == "on"
+		IH:Save()
+	end
+	MenuCallbackHandler.InstantHeists_GhostMode = function(self, item)
+		IH.settings.ghost_mode = item:value() == "on"
+		IH:Save()
+		if managers and managers.chat and managers.chat._receive_message then
+			local msg = IH.settings.ghost_mode
+				and "Ghost Mode ON — AI/cameras cannot detect you"
+				or "Ghost Mode OFF — normal detection"
+			managers.chat:_receive_message(
+				(ChatManager and ChatManager.GAME) or 1,
+				"[Instant Heists]",
+				msg,
+				Color(0.5, 1, 0.6)
+			)
+		end
+	end
 	MenuCallbackHandler.InstantHeists_Save = function(self)
 		IH:Save()
 	end

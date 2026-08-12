@@ -17,6 +17,10 @@
 	"ih_vhud_compat_desc": "If VHUD+ is installed, keep sped-up holds at least as long as its auto-hold threshold so lock mode + G cancel still arm.",
 	"ih_speed_mult_title": "Timer speed (x)",
 	"ih_speed_mult_desc": "How many times faster waits are. 1 = vanilla, 5 = five times faster, 20 = near-instant. Avoid pure zero (can softlock scripts).",
+	"ih_protect_puzzle_title": "Protect puzzle / path timers",
+	"ih_protect_puzzle_desc": "The Diamond only: keep ALL mission ElementTimers vanilla except time locks (path lifetime stays full length). Also keeps circuit-box clocks in sync with logic so you do not get UI 90s / door opens at 5s. Leave ON or first-tile wrong-path alarms return.",
 	"ih_crouch_only_title": "Only while crouching",
-	"ih_crouch_only_desc": "Bypass requirements and timer speed only apply while you are crouched. Stand up = vanilla rules again."
+	"ih_crouch_only_desc": "Bypass requirements and timer speed only apply while you are crouched. Stand up = vanilla rules again.",
+	"ih_ghost_mode_title": "Ghost Mode (undetectable)",
+	"ih_ghost_mode_desc": "100% invisible to guards and cameras. No suspicion, no camera alarms, no weapons-hot from being spotted. You can hug a guard. Toggle any time (Options menu). Host-side detection is what matters in multiplayer."
 }

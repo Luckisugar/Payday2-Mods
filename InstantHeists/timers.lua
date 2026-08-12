@@ -3,6 +3,10 @@
 
 	TimerGui: smaller get_timer_multiplier() → faster drills/saws/hacks.
 	DigitalGui: scale dt on countdown/count-up so display + logic match.
+
+	v1.2.1: DigitalGui uses per-gui mult marked by ElementTimer (linked units)
+	so The Diamond path clock stays vanilla while time-lock displays speed
+	with their ElementTimer. Unlinked DigitalGuis on mus stay vanilla.
 ]]
 
 if not InstantHeists or not InstantHeists.Load then
@@ -26,8 +30,16 @@ end
 if DigitalGui then
 	local orig_update = DigitalGui.update
 	function DigitalGui:update(unit, t, dt)
-		if IH:TimersOn() and self.TYPE == "timer" and not self._timer_paused then
-			dt = dt * IH:SpeedMult()
+		if self.TYPE == "timer" and not self._timer_paused then
+			local mult = 1
+			if IH.DigitalGuiSpeedMult then
+				mult = IH:DigitalGuiSpeedMult(self)
+			elseif IH:TimersOn() then
+				mult = IH:SpeedMult()
+			end
+			if mult and mult > 1 then
+				dt = dt * mult
+			end
 		end
 		return orig_update(self, unit, t, dt)
 	end

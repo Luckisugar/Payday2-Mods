@@ -98,6 +98,8 @@ Full **cheat** mod: skip equipment gates and speed up waits.
 - **Consume if owned** — if you already have the required item, it is still consumed; if you do not, the interact works anyway  
 - **Timer speed** — drills, vault/hack GUIs, mission timers, element delays (van, cook loops, staged waits)  
 - Global speed multiplier (default **5×**, slider 1–20)  
+- **Protect puzzle / path timers** (default **ON**) — never speed **The Diamond** floor-tile path lifetime (or its circuit-box clock). Without this, 5× speed expires the safe path before you walk it → wrong-tile alarm while Diamond Path Helper is still correct.  
+- **Ghost Mode** — 100% undetectable to guards/cameras (toggle under options).  
 - Options under **Mod Options → Instant Heists**
 
 > Host for reliable mission timers. Pure client-only lobbies will not always speed host-side scripts. This is an obvious cheat — expect desync / lobby drama online.
@@ -105,7 +107,9 @@ Full **cheat** mod: skip equipment gates and speed up waits.
 **v1.1.0:** optional **Only while crouching** — bypass + timer cheats only apply when ducked.  
 **v1.1.1:** fixed crash planting free shaped charges / mission-door deployables with none owned.  
 **v1.1.2:** **Speed mission script delays** option (default off) so Bain/radio reminder VO does not spam; drills/vaults still speed under the main timer toggle.  
-**v1.1.3:** VHUD+ compat — pagers/dangerous holds stay vanilla; hold-to-interact scaling clamps so auto-hold + drop-bag cancel still works.
+**v1.1.3:** VHUD+ compat — pagers/dangerous holds stay vanilla; hold-to-interact scaling clamps so auto-hold + drop-bag cancel still works.  
+**v1.2.0:** protect The Diamond path/puzzle timers from speed; **Ghost Mode** (undetectable).  
+**v1.2.1:** real path fix — ElementTimer is logic, DigitalGui is display; on mus **deny-all ElementTimer speed** except time-lock whitelist; linked DigitalGui inherits the same mult (fixes UI 90s / door at 5s desync and first-tile wrong-path alarms).
 
 ### 7) Loot Mule
 

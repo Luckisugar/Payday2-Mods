@@ -85,6 +85,15 @@
 			"step": 1
 		},
 		{
+			"type": "toggle",
+			"id": "ih_protect_puzzle",
+			"title": "ih_protect_puzzle_title",
+			"description": "ih_protect_puzzle_desc",
+			"callback": "InstantHeists_ProtectPuzzle",
+			"value": "protect_puzzle_timers",
+			"default_value": true
+		},
+		{
 			"type": "divider",
 			"size": 12
 		},
@@ -95,6 +104,19 @@
 			"description": "ih_crouch_only_desc",
 			"callback": "InstantHeists_CrouchOnly",
 			"value": "crouch_only",
+			"default_value": false
+		},
+		{
+			"type": "divider",
+			"size": 12
+		},
+		{
+			"type": "toggle",
+			"id": "ih_ghost_mode",
+			"title": "ih_ghost_mode_title",
+			"description": "ih_ghost_mode_desc",
+			"callback": "InstantHeists_GhostMode",
+			"value": "ghost_mode",
 			"default_value": false
 		}
 	]

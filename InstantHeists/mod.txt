@@ -1,9 +1,9 @@
 {
 	"name": "Instant Heists",
-	"description": "Cheat: interact without required items (consume if you have them). Speed up drills, cooks, vaults, and mission waits.",
+	"description": "Cheat: interact without required items (consume if you have them). Speed up drills, cooks, vaults, and mission waits. Optional Ghost Mode. Protects The Diamond path timer.",
 	"author": "Luckysugar",
 	"contact": "https://github.com/Luckisugar/Payday2-Mods",
-	"version": "1.1.3",
+	"version": "1.2.1",
 	"blt_version": 2,
 	"priority": 20,
 	"hooks": [
@@ -30,6 +30,34 @@
 		{
 			"hook_id": "core/lib/managers/mission/coremissionscriptelement",
 			"script_path": "mission_delay.lua"
+		},
+		{
+			"hook_id": "lib/managers/group_ai_states/groupaistatebase",
+			"script_path": "ghost.lua"
+		},
+		{
+			"hook_id": "lib/units/beings/player/playermovement",
+			"script_path": "ghost.lua"
+		},
+		{
+			"hook_id": "lib/units/props/securitycamera",
+			"script_path": "ghost.lua"
+		},
+		{
+			"hook_id": "lib/units/enemies/cop/copmovement",
+			"script_path": "ghost.lua"
+		},
+		{
+			"hook_id": "lib/units/enemies/cop/logics/coplogicarrest",
+			"script_path": "ghost.lua"
+		},
+		{
+			"hook_id": "lib/units/enemies/cop/logics/coplogicidle",
+			"script_path": "ghost.lua"
+		},
+		{
+			"hook_id": "lib/units/enemies/cop/logics/coplogicbase",
+			"script_path": "ghost.lua"
 		}
 	]
 }
