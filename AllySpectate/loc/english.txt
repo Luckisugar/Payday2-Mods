@@ -1,0 +1,20 @@
+{
+	"as_menu_title": "Ally Spectate",
+	"as_menu_desc": "Live camera through your teammates' eyes. Bind hotkeys under Options → Mod Keybinds.",
+	"as_enabled_title": "Enabled",
+	"as_enabled_desc": "Master switch for Ally Spectate.",
+	"as_freeze_title": "Freeze local player",
+	"as_freeze_desc": "While spectating, your character stops moving (recommended).",
+	"as_bots_title": "Include bots",
+	"as_bots_desc": "Allow spectating AI crewmates as well as human players.",
+	"as_hide_fp_title": "Hide your FP arms/gun",
+	"as_hide_fp_desc": "Hides your first-person weapons while watching an ally.",
+	"as_hint_title": "Chat hints",
+	"as_hint_desc": "SYSTEM chat when you start/stop spectating.",
+	"as_auto_exit_title": "Exit on damage",
+	"as_auto_exit_desc": "Snap back to yourself if you take damage while spectating.",
+	"as_eye_offset_title": "Eye offset (cm)",
+	"as_eye_offset_desc": "Push the camera slightly forward from the head so you are not inside the mesh.",
+	"as_debug_title": "Debug log",
+	"as_debug_desc": "Write [AllySpectate] lines to the BLT log."
+}

@@ -1,0 +1,84 @@
+{
+	"menu_id": "ally_spectate_options",
+	"parent_menu_id": "blt_options",
+	"title": "as_menu_title",
+	"description": "as_menu_desc",
+	"back_callback": "AllySpectate_Save",
+	"items": [
+		{
+			"type": "toggle",
+			"id": "as_enabled",
+			"title": "as_enabled_title",
+			"description": "as_enabled_desc",
+			"callback": "AllySpectate_Enabled",
+			"value": "enabled",
+			"default_value": true
+		},
+		{
+			"type": "toggle",
+			"id": "as_freeze",
+			"title": "as_freeze_title",
+			"description": "as_freeze_desc",
+			"callback": "AllySpectate_Freeze",
+			"value": "freeze_local",
+			"default_value": true
+		},
+		{
+			"type": "toggle",
+			"id": "as_bots",
+			"title": "as_bots_title",
+			"description": "as_bots_desc",
+			"callback": "AllySpectate_Bots",
+			"value": "include_bots",
+			"default_value": true
+		},
+		{
+			"type": "toggle",
+			"id": "as_hide_fp",
+			"title": "as_hide_fp_title",
+			"description": "as_hide_fp_desc",
+			"callback": "AllySpectate_HideFP",
+			"value": "hide_fp_weapon",
+			"default_value": true
+		},
+		{
+			"type": "toggle",
+			"id": "as_hint",
+			"title": "as_hint_title",
+			"description": "as_hint_desc",
+			"callback": "AllySpectate_Hint",
+			"value": "show_hint",
+			"default_value": true
+		},
+		{
+			"type": "toggle",
+			"id": "as_auto_exit",
+			"title": "as_auto_exit_title",
+			"description": "as_auto_exit_desc",
+			"callback": "AllySpectate_AutoExit",
+			"value": "auto_exit_on_damage",
+			"default_value": true
+		},
+		{
+			"type": "slider",
+			"id": "as_eye_offset",
+			"title": "as_eye_offset_title",
+			"description": "as_eye_offset_desc",
+			"callback": "AllySpectate_EyeOffset",
+			"value": "eye_offset",
+			"default_value": 12,
+			"min": 0,
+			"max": 40,
+			"step": 1
+		},
+		{
+			"type": "toggle",
+			"id": "as_debug",
+			"title": "as_debug_title",
+			"description": "as_debug_desc",
+			"callback": "AllySpectate_Debug",
+			"value": "debug_log",
+			"default_value": false
+		}
+	]
+}

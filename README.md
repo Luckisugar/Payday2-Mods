@@ -20,6 +20,7 @@ Personal SuperBLT mods for **PAYDAY 2**. Client-side QoL / stealth tooling. Not 
   - [Instant Heists](#6-instant-heists)
   - [Loot Mule](#7-loot-mule)
   - [Instant Restart](#8-instant-restart)
+  - [Ally Spectate](#9-ally-spectate)
 - [Notes](#notes)
 - [License](#license)
 
@@ -136,6 +137,20 @@ Carry **as many bags as you want** (stack, last in / first out). Not Carry Stack
 
 > Host only. Blocked while a peer is still loading (reduces blackscreens).
 
+### 9) Ally Spectate
+
+Live **through-their-eyes** camera on your teammates while you are still alive.
+
+- Hotkeys: **Ally 1 / Ally 2 / Ally 3**, **Return to me**, **Next ally**  
+- Bind under **Options → Mod Keybinds**  
+- Same-slot key again returns to yourself  
+- Freezes local movement while watching (optional, default on)  
+- Includes bots (optional)  
+- Auto-exits on damage / down / tase  
+- Client-side only — your body still sits in the world  
+
+> Other players are third-person husks on your client, so this tracks **head position + look direction** (not their exact FPS hands).
+
 ## Notes
 
 - These are **mods**, not cheats aimed at public matchmaking advantage. Use common sense online.  
@@ -144,10 +159,11 @@ Carry **as many bags as you want** (stack, last in / first out). Not Carry Stack
 - Instant Heists settings save to `instant_heists.txt` in the SuperBLT save path.  
 - Loot Mule settings save to `loot_mule.txt` in the SuperBLT save path.  
 - Instant Restart settings save to `instant_restart.txt` in the SuperBLT save path.  
+- Ally Spectate settings save to `ally_spectate.txt` in the SuperBLT save path.  
 - Game Lua dumps for research: [Payday-2-LuaJIT-Complete](https://github.com/steam-test1/Payday-2-LuaJIT-Complete) (reference only).
 
 ## License
 
-MIT for **original Luckisugar code** (Big Ammo, Omniscience+, Saw Stealth Conceal, Auto Skill Sets, Instant Heists, Loot Mule, Instant Restart).
+MIT for **original Luckisugar code** (Big Ammo, Omniscience+, Saw Stealth Conceal, Auto Skill Sets, Instant Heists, Loot Mule, Instant Restart, Ally Spectate).
 
 Silent Assassin remains credit to **DrTachyon**; this repo ships a small fork with extra options. If the original license differs, treat that folder under the original author’s terms and contact them for redistribution questions.
