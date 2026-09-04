@@ -1,0 +1,127 @@
+{
+	"menu_id": "heist_helper_meth",
+	"parent_menu_id": "heist_helper_menu",
+	"title": "hh_meth_menu_title",
+	"description": "hh_meth_menu_desc",
+	"items": [
+		{
+			"type": "toggle",
+			"id": "hh_meth_enabled",
+			"title": "hh_meth_enabled_title",
+			"description": "hh_meth_enabled_desc",
+			"callback": "hh_meth_enabled",
+			"value": "meth_enabled",
+			"default_value": true
+		},
+		{
+			"type": "toggle",
+			"id": "hh_meth_allcaps",
+			"title": "hh_meth_allcaps_title",
+			"description": "hh_meth_allcaps_desc",
+			"callback": "hh_meth_allcaps",
+			"value": "meth_message_allcaps",
+			"default_value": false
+		},
+		{
+			"type": "toggle",
+			"id": "hh_meth_ingred_repeat",
+			"title": "hh_meth_ingred_repeat_title",
+			"description": "hh_meth_ingred_repeat_desc",
+			"callback": "hh_meth_ingred_repeat",
+			"value": "meth_ingred_repeat",
+			"default_value": false
+		},
+		{
+			"type": "multiple_choice",
+			"id": "hh_meth_ingred_chat",
+			"title": "hh_meth_ingred_chat_title",
+			"description": "hh_meth_chat_desc",
+			"callback": "hh_meth_ingred_chat",
+			"items": [
+				"hh_meth_chat_private",
+				"hh_meth_chat_public",
+				"hh_meth_chat_off"
+			],
+			"value": "meth_ingred_chatmode",
+			"default_value": 1
+		},
+		{
+			"type": "toggle",
+			"id": "hh_meth_ingred_hint",
+			"title": "hh_meth_ingred_hint_title",
+			"description": "hh_meth_hint_desc",
+			"callback": "hh_meth_ingred_hint",
+			"value": "meth_ingred_hintmode",
+			"default_value": true
+		},
+		{
+			"type": "multiple_choice",
+			"id": "hh_meth_added_chat",
+			"title": "hh_meth_added_chat_title",
+			"description": "hh_meth_chat_desc",
+			"callback": "hh_meth_added_chat",
+			"items": [
+				"hh_meth_chat_private",
+				"hh_meth_chat_public",
+				"hh_meth_chat_off"
+			],
+			"value": "meth_added_chatmode",
+			"default_value": 1
+		},
+		{
+			"type": "toggle",
+			"id": "hh_meth_added_hint",
+			"title": "hh_meth_added_hint_title",
+			"description": "hh_meth_hint_desc",
+			"callback": "hh_meth_added_hint",
+			"value": "meth_added_hintmode",
+			"default_value": false
+		},
+		{
+			"type": "multiple_choice",
+			"id": "hh_meth_done_chat",
+			"title": "hh_meth_done_chat_title",
+			"description": "hh_meth_chat_desc",
+			"callback": "hh_meth_done_chat",
+			"items": [
+				"hh_meth_chat_private",
+				"hh_meth_chat_public",
+				"hh_meth_chat_off"
+			],
+			"value": "meth_done_chatmode",
+			"default_value": 1
+		},
+		{
+			"type": "toggle",
+			"id": "hh_meth_done_hint",
+			"title": "hh_meth_done_hint_title",
+			"description": "hh_meth_hint_desc",
+			"callback": "hh_meth_done_hint",
+			"value": "meth_done_hintmode",
+			"default_value": false
+		},
+		{
+			"type": "multiple_choice",
+			"id": "hh_meth_fail_chat",
+			"title": "hh_meth_fail_chat_title",
+			"description": "hh_meth_chat_desc",
+			"callback": "hh_meth_fail_chat",
+			"items": [
+				"hh_meth_chat_private",
+				"hh_meth_chat_public",
+				"hh_meth_chat_off"
+			],
+			"value": "meth_fail_chatmode",
+			"default_value": 3
+		},
+		{
+			"type": "toggle",
+			"id": "hh_meth_fail_hint",
+			"title": "hh_meth_fail_hint_title",
+			"description": "hh_meth_hint_desc",
+			"callback": "hh_meth_fail_hint",
+			"value": "meth_fail_hintmode",
+			"default_value": true
+		}
+	]
+}

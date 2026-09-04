@@ -1,0 +1,19 @@
+{
+	"lm_menu_title": "Loot Mule",
+	"lm_menu_desc": "Stack bags if you have the mod. In multiplayer the host must have it too. Crouch to stack more while already carrying.",
+	"lm_enabled_title": "Enabled",
+	"lm_enabled_desc": "Master switch. Multiplayer stacking needs the host to have this on. If you still have bags stacked when you turn this off, you can keep throwing until empty.",
+	"lm_crouch_pickup_title": "Crouch to stack more bags",
+	"lm_crouch_pickup_desc": "First bag: pick up normally while standing. Already carrying: crouch to grab another (stack). Throw always works standing.",
+	"lm_throw_distance_title": "Throw distance (x)",
+	"lm_throw_distance_desc": "Multiplies how far bags fly when you throw. 1 = vanilla, higher = yeet, lower = soft drop. Steps of 0.01 (default 1.69).",
+	"lm_dump_all_title": "Dump entire stack on throw",
+	"lm_dump_all_desc": "On: one G dumps the stack with a short gap so bags do not eat each other. Off: exactly one bag per throw (next bag waits until you release G). Bag ziplines always take one bag.",
+	"lm_stack_hint_title": "Notifications",
+	"lm_stack_hint_desc": "On-screen hint every time you pick up or drop a bag (Loot Mule: N bags). Off = silent. The stack-count icon stays.",
+	"lm_unlimited_body_bags_title": "Unlimited body bags",
+	"lm_unlimited_body_bags_desc": "Bag bodies without running out of body bags. Still need the body bag skill. Off = vanilla bag charges.",
+	"hint_not_crouching": "Crouch to stack another bag (Loot Mule)",
+	"lm_hint_host_only": "Loot Mule: host needs this mod to stack extra bags",
+	"lm_hint_busy": "Loot Mule: still throwing"
+}

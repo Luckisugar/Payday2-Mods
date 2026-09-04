@@ -15,24 +15,28 @@ Personal SuperBLT mods for **PAYDAY 2**. Client-side QoL / stealth tooling. Not 
   - [Big Ammo Pickups](#1-big-ammo-pickups)
   - [Omniscience+](#2-omniscience)
   - [Saw Stealth Conceal](#3-saw-stealth-conceal)
-  - [Silent Assassin (fork)](#4-silent-assassin-fork)
+  - [Ninja](#4-ninja)
   - [Auto Skill Sets](#5-auto-skill-sets)
   - [Instant Heists](#6-instant-heists)
   - [Loot Mule](#7-loot-mule)
   - [Instant Restart](#8-instant-restart)
   - [Ally Spectate](#9-ally-spectate)
+  - [Diamond Path Helper](#10-diamond-path-helper)
+  - [Meth Helper](#11-meth-helper)
 - [Notes](#notes)
 - [License](#license)
 
 ## Install
 
-1. Install **[SuperBLT](https://superblt.znix.xyz/)** if you do not already have it.  
-2. Copy each mod **folder** into:
+1. Install **[SuperBLT](https://superblt.znix.xyz/)** (64-bit / Diesel 3.0).  
+2. Copy **`HeistHelper`** (the hub) plus any **`HH_*`** module folders into:
 
    `…\Steam\steamapps\common\PAYDAY 2\mods\`
 
+   Nexus zips already contain both. Installing a second pack only adds another `HH_*` folder; overwriting `HeistHelper` is safe.
+
 3. Full restart PAYDAY 2.  
-4. Configure under **Options → Mod Options**.
+4. Configure under **Options → Mod Options → Heist Helper**.
 
 ## Mods
 
@@ -44,15 +48,19 @@ Buffs ammo from the small boxes enemies drop.
 - Optional min/max floors
 - Optional boost for zero-pickup weapons (RPG, saw, bows, etc.)
 - Fully Loaded / Walk-in Closet still stack on top
+- Optional **Fill magazine from reserve** — boxes chamber the mag (vanilla reload clip write). Works at max ammo, including RPG / missile.
 
 ### 2) Omniscience+
 
-Buffs **Sixth Sense** stealth radar (stand-still).
+Buffs **Sixth Sense** stealth radar (stand still to pulse).
 
 - Faster sense delay, longer range
-- Marks guards (and optional cameras / items) with real contours
+- Marks spawned guards, cameras, pickups, crates, safes, loose/baggable loot, ATMs
+- Per-category checkboxes under Mod Options (computers / body bags / dropped bags default **off**)
+- Circuit boxes: closed panels you can actually open this run (dummy spawn slots stay hidden)
+- Contour first; HUD icon only if a silhouette cannot be applied
+- Cameras: outline only, no HUD icons; outline stays up between pulses
 - Local-only by default; optional team sync
-- Independent of VanillaHUD’s sense hooks where possible
 
 ### 3) Saw Stealth Conceal
 
@@ -61,7 +69,7 @@ Raises **OVE9000 Saw** concealment for stealth builds (default **30**).
 - Slider in Mod Options  
 - Primary + secondary saw tweak entries  
 
-### 4) Silent Assassin (fork)
+### 4) Ninja
 
 Based on **Silent Assassin** by **DrTachyon** (pager / stealth-kill rules).
 
@@ -72,7 +80,7 @@ Based on **Silent Assassin** by **DrTachyon** (pager / stealth-kill rules).
 | **Only My Kills** | No-pager stealth kill applies only to **your** kills (best when you host) |
 | **Only While Crouching** | No-pager only if the killer is **crouching** |
 
-Original SA options (pager counts, detection threshold, matchmaking filter) still work.
+Original SA options (pager counts, detection threshold) still work. Crime.net lobby filter is gone — Ninja does not touch matchmaking.
 
 > Host authority: pager removal is decided on the **server**. Host this mod for reliable behavior.
 
@@ -118,7 +126,7 @@ Carry **as many bags as you want** (stack, last in / first out). Not Carry Stack
 - **First bag standing**; **crouch to stack more** (default on) — throw always works standing  
 - **Throw distance** slider (0.25×–10×, default **1.69**, step **0.01**)  
 - **Dump entire stack on throw** (default on) — one G = pile dump; off = LIFO one bag  
-- Stack count HUD + optional hint  
+- Stack count HUD + optional **Notifications** (pickup/drop hint; off = silent)  
 - **Unlimited body bags** default on; bag anti-cheat bypass so stacks are not eaten  
 - Options under **Mod Options → Loot Mule**  
 - **v1.0.4:** dump-all option + throw default 1.69
@@ -155,6 +163,27 @@ Live **through-their-eyes** camera on your teammates while you are still alive.
 
 > Other players are third-person husks on your client, so this tracks **head position + look direction** (not their exact FPS hands).
 
+### 10) Diamond Path Helper
+
+Prints the **real** safe floor-tile path for **The Diamond** after the chamber path box is hacked (not the buggy light guide).
+
+- Private / public / both chat
+- Numbered 6×9 grid: rows **1–9** (entrance → diamond), columns **1–6** left → right
+- Fixed-width cells: `##` = safe, `--` = alarm (columns do not shift)
+- **+15s** on the path lifetime (30s → 45s on DW/DS). Host only. Toggle under options.
+- Settings: `diamond_path_helper.txt`
+
+> Host for the extra 15 seconds. Chat path still works as a client.
+
+**v1.3.0:** +15s path timer; numbered `--`/`##` grid; no S/E/D markers.
+
+### 11) Meth Helper
+
+Bain/Locke cook lines as ingredient callouts. Based on **Meth Helper Updated** (Offyerrocker).
+
+- Toggle under Heist Helper → Meth Helper
+- Optional keybind to mute callouts mid-heist
+
 ## Notes
 
 - These are **mods**, not cheats aimed at public matchmaking advantage. Use common sense online.  
@@ -168,6 +197,6 @@ Live **through-their-eyes** camera on your teammates while you are still alive.
 
 ## License
 
-MIT for **original Luckisugar code** (Big Ammo, Omniscience+, Saw Stealth Conceal, Auto Skill Sets, Instant Heists, Loot Mule, Instant Restart, Ally Spectate).
+MIT for **original Luckisugar code** (Heist Helper hub, Big Ammo, Omniscience+, Saw Stealth Conceal, Auto Skill Sets, Instant Heists, Loot Mule, Instant Restart, Ally Spectate, Diamond Path Helper).
 
-Silent Assassin remains credit to **DrTachyon**; this repo ships a small fork with extra options. If the original license differs, treat that folder under the original author’s terms and contact them for redistribution questions.
+Ninja remains credit to **DrTachyon** (Silent Assassin fork) with Luckysugar options. Meth Helper cook lines credit **Offyerrocker**. If an original license differs, treat that folder under the original author’s terms.

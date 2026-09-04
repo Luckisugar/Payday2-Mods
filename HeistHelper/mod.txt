@@ -1,0 +1,16 @@
+{
+	"name": "Heist Helper",
+	"description": "Master hub for Luckysugar modules. Other HH_* mods appear here as buttons. Safe to overwrite when installing another Heist Helper pack.",
+	"author": "Luckysugar",
+	"contact": "https://github.com/Luckisugar/Payday2-Mods",
+	"version": "3.0.0",
+	"blt_version": 2,
+	"priority": 1000,
+	"is_library": true,
+	"hooks": [
+		{
+			"hook_id": "lib/managers/menumanager",
+			"script_path": "menu.lua"
+		}
+	]
+}

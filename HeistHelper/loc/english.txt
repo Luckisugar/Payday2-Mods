@@ -1,0 +1,4 @@
+{
+	"hh_menu_title": "Heist Helper",
+	"hh_menu_desc": "Luckysugar modules. Install more HH_* packs and they show up here."
+}

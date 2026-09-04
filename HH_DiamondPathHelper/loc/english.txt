@@ -1,0 +1,15 @@
+{
+	"hh_diamond_menu_title": "Diamond Path Helper",
+	"hh_diamond_menu_desc": "Print the real chamber tile path on The Diamond after the path box is hacked.",
+	"hh_diamond_enabled_title": "Enabled",
+	"hh_diamond_enabled_desc": "Print the safe path when the chamber path box finishes hacking.",
+	"hh_chat_mode_title": "Chat output",
+	"hh_chat_mode_desc": "Private = only you. Public = team chat. Both = private + public.",
+	"hh_chat_private": "Private only",
+	"hh_chat_public": "Public team chat",
+	"hh_chat_both": "Private + public",
+	"hh_show_grid_title": "Show ASCII grid",
+	"hh_show_grid_desc": "Optional top-down grid after the path line (off by default — noisy).",
+	"hh_show_hint_title": "HUD hint",
+	"hh_show_hint_desc": "Also flash the compact path as a HUD hint."
+}

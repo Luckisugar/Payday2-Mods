@@ -1,0 +1,30 @@
+{
+	"name": "Meth Helper",
+	"description": "Heist Helper module: Bain/Locke cook lines as ingredient callouts. Based on Meth Helper Updated (Offyerrocker).",
+	"author": "Luckysugar (meth lines: Offyerrocker)",
+	"contact": "https://github.com/Luckisugar/Payday2-Mods",
+	"version": "2.0.0",
+	"blt_version": 2,
+	"priority": 10,
+	"hooks": [
+		{
+			"hook_id": "lib/managers/menumanager",
+			"script_path": "menu.lua"
+		},
+		{
+			"hook_id": "lib/managers/dialogmanager",
+			"script_path": "meth.lua"
+		}
+	],
+	"keybinds": [
+		{
+			"keybind_id": "heist_helper_meth_toggle",
+			"name": "Heist Helper: Toggle meth callouts",
+			"description": "Enable or disable meth-lab ingredient callouts (not saved).",
+			"script_path": "meth_keybind.lua",
+			"run_in_menu": false,
+			"run_in_game": true,
+			"localized": false
+		}
+	]
+}

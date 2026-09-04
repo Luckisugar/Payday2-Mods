@@ -1,0 +1,27 @@
+{
+	"name": "Diamond Path Helper",
+	"description": "Heist Helper module: prints the real safe tile path for The Diamond chamber after the path box is hacked.",
+	"author": "Luckysugar",
+	"contact": "https://github.com/Luckisugar/Payday2-Mods",
+	"version": "1.2.0",
+	"blt_version": 2,
+	"priority": 10,
+	"hooks": [
+		{
+			"hook_id": "lib/managers/menumanager",
+			"script_path": "menu.lua"
+		},
+		{
+			"hook_id": "core/lib/managers/mission/coremissionscriptelement",
+			"script_path": "core.lua"
+		},
+		{
+			"hook_id": "lib/units/unitdamage",
+			"script_path": "core.lua"
+		},
+		{
+			"hook_id": "lib/units/interactions/interactionext",
+			"script_path": "interact.lua"
+		}
+	]
+}

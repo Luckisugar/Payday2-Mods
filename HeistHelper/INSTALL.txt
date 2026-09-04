@@ -1,0 +1,15 @@
+Heist Helper 3.0 — master hub
+=============================
+
+This folder is the shared menu. Gameplay is in sibling folders named HH_*.
+
+Install: extract the zip into PAYDAY 2\mods\ so you get:
+
+  mods\HeistHelper\          (this hub — overwrite is safe)
+  mods\HH_SomeModule\        (the feature)
+
+Installing a second Heist Helper pack only adds another HH_* folder.
+Options → Mod Options → Heist Helper → one button per installed module.
+
+Requires SuperBLT 64-bit (Diesel 3.0).
+Source: https://github.com/Luckisugar/Payday2-Mods

@@ -1,0 +1,12 @@
+{
+	"menu_id": "heist_helper_menu",
+	"parent_menu_id": "blt_options",
+	"title": "hh_menu_title",
+	"description": "hh_menu_desc",
+	"items": [
+		{
+			"type": "divider",
+			"size": 8
+		}
+	]
+}

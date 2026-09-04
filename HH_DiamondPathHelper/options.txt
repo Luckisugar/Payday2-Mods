@@ -1,0 +1,49 @@
+{
+	"menu_id": "heist_helper_diamond",
+	"parent_menu_id": "heist_helper_menu",
+	"title": "hh_diamond_menu_title",
+	"description": "hh_diamond_menu_desc",
+	"items": [
+		{
+			"type": "toggle",
+			"id": "hh_diamond_enabled",
+			"title": "hh_diamond_enabled_title",
+			"description": "hh_diamond_enabled_desc",
+			"callback": "hh_diamond_enabled",
+			"value": "enabled",
+			"default_value": true
+		},
+		{
+			"type": "multiple_choice",
+			"id": "hh_chat_mode",
+			"title": "hh_chat_mode_title",
+			"description": "hh_chat_mode_desc",
+			"callback": "hh_chat_mode",
+			"items": [
+				"hh_chat_private",
+				"hh_chat_public",
+				"hh_chat_both"
+			],
+			"value": "chat_mode",
+			"default_value": 1
+		},
+		{
+			"type": "toggle",
+			"id": "hh_show_grid",
+			"title": "hh_show_grid_title",
+			"description": "hh_show_grid_desc",
+			"callback": "hh_show_grid",
+			"value": "show_grid",
+			"default_value": false
+		},
+		{
+			"type": "toggle",
+			"id": "hh_show_hint",
+			"title": "hh_show_hint_title",
+			"description": "hh_show_hint_desc",
+			"callback": "hh_show_hint",
+			"value": "show_hint",
+			"default_value": true
+		}
+	]
+}
