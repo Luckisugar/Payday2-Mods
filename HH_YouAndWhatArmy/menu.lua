@@ -28,6 +28,22 @@ Hooks:Add("MenuManagerInitialize", "YouAndWhatArmy_MenuInit", function(menu_mana
 		YAWA.settings.max_minions = YAWA:ClampMinions(item:value())
 		YAWA:Save()
 	end
+	MenuCallbackHandler.YouAndWhatArmy_MaxThreat = function(self, item)
+		YAWA.settings.max_threat = item:value() == "on"
+		YAWA:Save()
+	end
+	MenuCallbackHandler.YouAndWhatArmy_InstaRecruit = function(self, item)
+		YAWA.settings.insta_recruit = item:value() == "on"
+		YAWA:Save()
+	end
+	MenuCallbackHandler.YouAndWhatArmy_NoYellCooldown = function(self, item)
+		YAWA.settings.no_yell_cooldown = item:value() == "on"
+		YAWA:Save()
+	end
+	MenuCallbackHandler.YouAndWhatArmy_LobbyYells = function(self, item)
+		YAWA.settings.lobby_yells = item:value() == "on"
+		YAWA:Save()
+	end
 	MenuCallbackHandler.YouAndWhatArmy_Save = function(self)
 		YAWA:Save()
 	end

@@ -1,8 +1,16 @@
 {
 	"yawa_menu_title": "You and What Army",
-	"yawa_menu_desc": "Raise your Joker convert cap. Host or solo. Still needs the Joker skill. Regular cops only.",
+	"yawa_menu_desc": "Raise your Joker convert cap. Optional one-yell cuff / convert. Host or solo. Still needs Joker to convert. Regular cops only.",
 	"yawa_enabled_title": "Enabled",
 	"yawa_enabled_desc": "Master switch. Only applies when you host (or play solo). Clients joining you keep their own 1–2 cap.",
 	"yawa_max_minions_title": "Joker limit",
-	"yawa_max_minions_desc": "How many converted cops you can have at once. Vanilla is 1, or 2 with Confident Aced. Default 8. Does not convert specials."
+	"yawa_max_minions_desc": "How many converted cops you can have at once. Vanilla is 1, or 2 with Confident Aced. Default 8. Does not convert specials.",
+	"yawa_max_threat_title": "Max Threat",
+	"yawa_max_threat_desc": "One yell fully cuffs a regular cop. Skips the 3-phase anim and the health RNG. Does not convert specials.",
+	"yawa_insta_recruit_title": "Insta-recruit",
+	"yawa_insta_recruit_desc": "Yell converts a regular cop (Joker required, loud only). At your cap, leftovers cuff instead. No specials. No stealth convert.",
+	"yawa_no_yell_cd_title": "No Yell Cooldown",
+	"yawa_no_yell_cd_desc": "Removes your 1.5s shout delay and the cop resist lock that ignores further yells. Inspire cooldown stays vanilla.",
+	"yawa_lobby_yells_title": "Lobby yells",
+	"yawa_lobby_yells_desc": "Max Threat and Insta-recruit also apply when teammates yell. Converts still go to you (your cap). Their shout delay stays vanilla unless they have this mod."
 }

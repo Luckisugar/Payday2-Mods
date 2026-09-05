@@ -95,7 +95,7 @@ Bain/Locke cook lines as ingredient callouts. Based on **Meth Helper Updated** (
 
 ### 12) You and What Army
 
-Raise **your** Joker convert cap (vanilla **1**, or **2** with Confident Aced). Slider **2–32**, default **8**. Still needs Joker. Host / solo only.
+Raise **your** Joker convert cap (vanilla **1**, or **2** with Confident Aced). Slider **2–32**, default **8**. Still needs Joker. Host / solo only. Optional one-yell cuff, insta-convert, no shout delay, and lobby yells.
 
 > If you join someone else, their lobby still enforces 1–2. Teammates in *your* lobby keep their own vanilla cap.
 
