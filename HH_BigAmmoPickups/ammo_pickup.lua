@@ -37,6 +37,7 @@ function BAP:DefaultSettings()
 		share_heal_cooldown = 3,
 		collect_on_kill = false,
 		mag_when_full = false,
+		mag_crouch_only = false,
 	}
 end
 
@@ -181,6 +182,22 @@ function BAP:_local_player()
 	return managers.player and managers.player:player_unit()
 end
 
+-- Same ducking check as Loot Mule / Instant Heists.
+function BAP:IsCrouching()
+	local player = self:_local_player()
+	if not alive(player) then
+		return false
+	end
+	local state = player:movement() and player:movement():current_state()
+	if state and state.ducking then
+		return state:ducking() == true
+	end
+	if state and state._state_data then
+		return state._state_data.ducking == true
+	end
+	return false
+end
+
 function BAP:AddLocalPickupAmmo(ratio)
 	ratio = ratio or 1
 	local unit = self:_local_player()
@@ -211,6 +228,9 @@ end
 function BAP:TryFillMagazineFromPickup(weapon)
 	self:_ensure_settings()
 	if not self.settings.mag_when_full then
+		return false
+	end
+	if self.settings.mag_crouch_only and not self:IsCrouching() then
 		return false
 	end
 	if not weapon then

@@ -1,0 +1,30 @@
+{
+	"menu_id": "you_and_what_army_options",
+	"parent_menu_id": "heist_helper_menu",
+	"title": "yawa_menu_title",
+	"description": "yawa_menu_desc",
+	"back_callback": "YouAndWhatArmy_Save",
+	"items": [
+		{
+			"type": "toggle",
+			"id": "yawa_enabled",
+			"title": "yawa_enabled_title",
+			"description": "yawa_enabled_desc",
+			"callback": "YouAndWhatArmy_Enabled",
+			"value": "enabled",
+			"default_value": true
+		},
+		{
+			"type": "slider",
+			"id": "yawa_max_minions",
+			"title": "yawa_max_minions_title",
+			"description": "yawa_max_minions_desc",
+			"callback": "YouAndWhatArmy_MaxMinions",
+			"value": "max_minions",
+			"default_value": 8,
+			"min": 2,
+			"max": 32,
+			"step": 1
+		}
+	]
+}

@@ -3,7 +3,7 @@
 	"description": "Cheat: interact without required items (consume if you have them). Speed up drills, Cook Off cook/supply waits, vaults. Voices stay vanilla. Optional Ghost Mode. Protects The Diamond path timer.",
 	"author": "Luckysugar",
 	"contact": "https://github.com/Luckisugar/Payday2-Mods",
-	"version": "1.4.3",
+	"version": "1.4.4",
 	"blt_version": 2,
 	"priority": 20,
 	"hooks": [

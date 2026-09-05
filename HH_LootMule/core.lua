@@ -1,5 +1,5 @@
 --[[
-	Loot Mule — multi-bag stack (LIFO). Crouch-only pickup. Throw distance slider.
+	Loot Mule — multi-bag stack (LIFO). Crouch-only pickup. Per-type throw. Stash.
 ]]
 
 _G.LootMule = _G.LootMule or {}
@@ -13,15 +13,49 @@ LM.stack = LM.stack or {}
 LM.DUMP_GAP = 0.1
 LM.RELEASE_GAP = 0.05
 
+-- Vanilla carry types that actually show up as bags. Unknown types use throw_distance.
+LM.THROW_TYPES = {
+	"light",
+	"coke_light",
+	"slightly_heavy",
+	"medium",
+	"heavy",
+	"slightly_very_heavy",
+	"very_heavy",
+	"mega_heavy",
+	"being",
+	"explosives",
+	"cloaker_explosives"
+}
+
 function LM:DefaultSettings()
 	return {
 		enabled = true,
 		crouch_pickup = true,
+		stash = false,
 		throw_distance = 1.69,
 		dump_all = true,
 		show_stack_hint = true,
 		unlimited_body_bags = true
 	}
+end
+
+function LM:ClampThrow(v)
+	v = tonumber(v) or 1.69
+	return math.max(0.25, math.min(10, math.floor(v * 100 + 0.5) / 100))
+end
+
+function LM:_normalize_bool(v)
+	return v == true or v == "on" or v == 1
+end
+
+function LM:_normalize_throws()
+	local fallback = self:ClampThrow(self.settings.throw_distance)
+	self.settings.throw_distance = fallback
+	for _, typ in ipairs(self.THROW_TYPES) do
+		local key = "throw_" .. typ
+		self.settings[key] = self:ClampThrow(self.settings[key] ~= nil and self.settings[key] or fallback)
+	end
 end
 
 function LM:Load()
@@ -36,12 +70,13 @@ function LM:Load()
 			end
 		end
 	end
-	local td = tonumber(self.settings.throw_distance) or 1.69
-	self.settings.throw_distance = math.max(0.25, math.min(10, math.floor(td * 100 + 0.5) / 100))
-	local d = self.settings.dump_all
-	self.settings.dump_all = (d == true or d == "on" or d == 1)
-	local h = self.settings.show_stack_hint
-	self.settings.show_stack_hint = (h == true or h == "on" or h == 1)
+	self.settings.dump_all = self:_normalize_bool(self.settings.dump_all)
+	self.settings.show_stack_hint = self:_normalize_bool(self.settings.show_stack_hint)
+	self.settings.stash = self:_normalize_bool(self.settings.stash)
+	self.settings.crouch_pickup = self.settings.crouch_pickup ~= false
+	self.settings.unlimited_body_bags = self.settings.unlimited_body_bags ~= false
+	self.settings.enabled = self.settings.enabled ~= false
+	self:_normalize_throws()
 end
 
 function LM:Save()
@@ -146,6 +181,14 @@ function LM:ValidCarryId(id)
 	return true
 end
 
+function LM:CarryType(carry_id)
+	local td = tweak_data and tweak_data.carry
+	if not carry_id or not td or type(td[carry_id]) ~= "table" then
+		return nil
+	end
+	return td[carry_id].type
+end
+
 --- nil = allowed. "host_only" / "crouch" / "busy"
 function LM:PickupBlockReason()
 	if self._dumping or self._wait_release then
@@ -172,11 +215,19 @@ function LM:CanPickupNow()
 	return self:PickupBlockReason() == nil
 end
 
-function LM:ThrowMult()
+function LM:ThrowMult(carry_id)
 	if not self:IsEnabled() then
 		return 1
 	end
-	return math.max(0.25, math.min(10, tonumber(self.settings.throw_distance) or 1.69))
+	local typ = self:CarryType(carry_id)
+	local v
+	if typ then
+		v = self.settings["throw_" .. typ]
+	end
+	if v == nil then
+		v = self.settings.throw_distance
+	end
+	return self:ClampThrow(v)
 end
 
 --- One G throw = entire stack flies out. Off = LIFO one bag per throw.
@@ -190,6 +241,45 @@ end
 
 function LM:UnlimitedBodyBags()
 	return self:IsEnabled() and self.settings.unlimited_body_bags == true
+end
+
+--- Stash: still carrying, but walk/run/jump like empty-handed.
+function LM:IsStashOn()
+	return self:IsEnabled() and self.settings and self.settings.stash == true
+end
+
+function LM:SetStash(on)
+	if not self.settings then
+		self:Load()
+	end
+	self.settings.stash = on == true
+	self:Save()
+	self:ApplyStashFeel()
+	self:HudRefresh()
+	return self.settings.stash
+end
+
+function LM:ToggleStash()
+	return self:SetStash(not self:IsStashOn())
+end
+
+function LM:ApplyStashFeel()
+	local player = managers.player and managers.player:player_unit()
+	if not alive(player) then
+		return
+	end
+	local cam = player.camera and player:camera()
+	local cam_unit = cam and cam.camera_unit and cam:camera_unit()
+	local base = cam_unit and cam_unit.base and cam_unit:base()
+	if not base or not base.set_target_tilt then
+		return
+	end
+	local carrying = managers.player.is_carrying and managers.player:is_carrying()
+	if carrying and self:IsStashOn() then
+		base:set_target_tilt(0)
+	elseif carrying then
+		base:set_target_tilt((PlayerCarry and PlayerCarry.target_tilt) or -5)
+	end
 end
 
 function LM:Count()
@@ -273,9 +363,13 @@ function LM:HudRefresh()
 	if n <= 0 then
 		return
 	end
+	local text = "Loot Mule: " .. tostring(n) .. " bag" .. (n == 1 and "" or "s")
+	if self:IsStashOn() then
+		text = text .. " (stashed)"
+	end
 	if managers.hud and managers.hud.show_hint then
 		managers.hud:show_hint({
-			text = "Loot Mule: " .. tostring(n) .. " bag" .. (n == 1 and "" or "s"),
+			text = text,
 			time = 1.5
 		})
 	end

@@ -236,14 +236,11 @@ function IH:IsCookOrSupplyElement(element)
 		or string.find(name, "batch", 1, true)
 end
 
---- Scale this script delay? Dialogue/VO stays vanilla.
+--- Scale this script delay? Dialogue/VO stays vanilla unless it IS the cook wait.
 --- Cook/supply waits run when Speed up timers is on (no need for the global
 --- "speed all mission delays" toggle, which also hits reminder loops).
 function IH:ShouldScaleMissionDelay(element, delay)
 	if not self:TimersOn() then
-		return false
-	end
-	if self:IsDialogueElement(element) then
 		return false
 	end
 	if self:IsWorldStayTimer(element) then
@@ -253,13 +250,20 @@ function IH:ShouldScaleMissionDelay(element, delay)
 		return false
 	end
 	if self.settings.speed_mission_delays == true then
+		if self:IsDialogueElement(element) then
+			return false
+		end
 		return true
 	end
 	if self:IsCookOrSupplyElement(element) then
 		return true
 	end
-	-- Do NOT blanket-speed every 8s+ delay on cook maps — that is the
-	-- escape/trade van wait as well as the cook.
+	-- Cook maps: the 20–25s ingredient RNG wait is often a nameless
+	-- chance/delay, not "cook" in the editor name. Window stops at 50s so
+	-- escape/trade vans (usually much longer) stay vanilla.
+	if self:IsCookLevel() and type(delay) == "number" and delay >= 12 and delay <= 50 then
+		return true
+	end
 	return false
 end
 

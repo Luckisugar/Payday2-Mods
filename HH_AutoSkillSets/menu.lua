@@ -18,6 +18,10 @@ if not ASS.Load then
 			auto_spend = true,
 			infamy_prompt = true,
 			block_mid_heist = true,
+			unsuspend_sets = true,
+			mask_skills = true,
+			points_at_100 = 120,
+			bonus_points = 0,
 			edit_cheat = false,
 			active_slot = 1,
 			cheat_level = 100,
@@ -96,9 +100,21 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "AutoSkillSets_populate", function(m
 		end
 	end
 
+	local function find_menu_item(from_item, id)
+		local gui_node = from_item and from_item.parameters and from_item:parameters().gui_node
+		local node = gui_node and gui_node.node
+		if node and node.item then
+			return node:item(id)
+		end
+		return nil
+	end
+
 	MenuCallbackHandler.ass_toggle_enabled = function(self, item)
 		ASS.settings.enabled = item:value() == "on"
 		ASS:Save()
+		if ASS.PushOutfit then
+			ASS:PushOutfit()
+		end
 	end
 
 	MenuCallbackHandler.ass_toggle_auto_spend = function(self, item)
@@ -114,6 +130,68 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "AutoSkillSets_populate", function(m
 	MenuCallbackHandler.ass_toggle_block_heist = function(self, item)
 		ASS.settings.block_mid_heist = item:value() == "on"
 		ASS:Save()
+	end
+
+	MenuCallbackHandler.ass_toggle_unsuspend = function(self, item)
+		ASS.settings.unsuspend_sets = item:value() == "on"
+		ASS:Save()
+	end
+
+	MenuCallbackHandler.ass_toggle_mask = function(self, item)
+		ASS.settings.mask_skills = item:value() == "on"
+		ASS:Save()
+		if ASS.PushOutfit then
+			ASS:PushOutfit()
+		end
+	end
+
+	local function queue_budget_apply()
+		local function run()
+			if ASS.ApplyPointBudget then
+				ASS:ApplyPointBudget("slider")
+			end
+		end
+		if DelayedCalls and DelayedCalls.Add then
+			DelayedCalls:Add("AutoSkillSets_budget", 0.4, run)
+		else
+			run()
+		end
+	end
+
+	MenuCallbackHandler.ass_set_points_100 = function(self, item)
+		if ASS._syncing_sliders then
+			return
+		end
+		ASS.settings.points_at_100 = math.floor(tonumber(item:value()) or 120)
+		if ASS.SyncBudgetSettings then
+			ASS:SyncBudgetSettings("total")
+		end
+		ASS:Save()
+		ASS._syncing_sliders = true
+		local other = find_menu_item(item, "ass_bonus")
+		if other and other.set_value then
+			other:set_value(ASS.settings.bonus_points or 0)
+		end
+		ASS._syncing_sliders = false
+		queue_budget_apply()
+	end
+
+	MenuCallbackHandler.ass_set_bonus = function(self, item)
+		if ASS._syncing_sliders then
+			return
+		end
+		ASS.settings.bonus_points = math.floor(tonumber(item:value()) or 0)
+		if ASS.SyncBudgetSettings then
+			ASS:SyncBudgetSettings("bonus")
+		end
+		ASS:Save()
+		ASS._syncing_sliders = true
+		local other = find_menu_item(item, "ass_points_100")
+		if other and other.set_value then
+			other:set_value(ASS.settings.points_at_100 or 120)
+		end
+		ASS._syncing_sliders = false
+		queue_budget_apply()
 	end
 
 	MenuCallbackHandler.ass_set_slot = function(self, item)
@@ -321,6 +399,56 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "AutoSkillSets_populate", function(m
 		priority = 90
 	})
 
+	set_visible_when(MenuHelper:AddToggle({
+		id = "ass_unsuspend",
+		title = "ass_unsuspend_title",
+		desc = "ass_unsuspend_desc",
+		callback = "ass_toggle_unsuspend",
+		value = ASS.settings.unsuspend_sets,
+		menu_id = MENU_ID,
+		priority = 89
+	}), "ass_edit_cheat_visible")
+
+	set_visible_when(MenuHelper:AddToggle({
+		id = "ass_mask",
+		title = "ass_mask_title",
+		desc = "ass_mask_desc",
+		callback = "ass_toggle_mask",
+		value = ASS.settings.mask_skills,
+		menu_id = MENU_ID,
+		priority = 88
+	}), "ass_edit_cheat_visible")
+
+	set_visible_when(MenuHelper:AddSlider({
+		id = "ass_points_100",
+		title = "ass_points_100_title",
+		desc = "ass_points_100_desc",
+		callback = "ass_set_points_100",
+		value = ASS.settings.points_at_100 or 120,
+		min = 120,
+		max = 300,
+		step = 1,
+		show_value = true,
+		display_precision = 0,
+		menu_id = MENU_ID,
+		priority = 87
+	}), "ass_edit_cheat_visible")
+
+	set_visible_when(MenuHelper:AddSlider({
+		id = "ass_bonus",
+		title = "ass_bonus_title",
+		desc = "ass_bonus_desc",
+		callback = "ass_set_bonus",
+		value = ASS.settings.bonus_points or 0,
+		min = 0,
+		max = 180,
+		step = 1,
+		show_value = true,
+		display_precision = 0,
+		menu_id = MENU_ID,
+		priority = 86
+	}), "ass_edit_cheat_visible")
+
 	set_visible_when(MenuHelper:AddDivider({
 		id = "ass_div_after_edit",
 		size = 14,
@@ -435,11 +563,49 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "AutoSkillSets_populate", function(m
 	}), "ass_edit_cheat_visible")
 end)
 
+local function already_linked(parent, menu_id)
+	if not parent or not parent._items then
+		return false
+	end
+	for _, item in pairs(parent._items) do
+		if item._parameters and item._parameters.name == menu_id then
+			return true
+		end
+	end
+	return false
+end
+
+local function attach_to_hub(nodes)
+	if not nodes or not nodes[MENU_ID] then
+		return false
+	end
+	local parent = nodes.heist_helper_menu
+	if not parent then
+		return false
+	end
+	if already_linked(parent, MENU_ID) then
+		return true
+	end
+	MenuHelper:AddMenuItem(parent, MENU_ID, "ass_menu_title", "ass_menu_desc")
+	return true
+end
+
 Hooks:Add("MenuManagerBuildCustomMenus", "AutoSkillSets_build", function(menu_manager, nodes)
 	nodes[MENU_ID] = MenuHelper:BuildMenu(MENU_ID)
-	if HeistHelper and HeistHelper.AttachMenuItem then
-		HeistHelper.AttachMenuItem(nodes, MENU_ID, "ass_menu_title", "ass_menu_desc")
-	else
-		MenuHelper:AddMenuItem(nodes.blt_options, MENU_ID, "ass_menu_title", "ass_menu_desc")
+	if attach_to_hub(nodes) then
+		return
+	end
+	-- Hub node is built later (JSON hook registers during Initialize). Never parent
+	-- to blt_options — that puts Auto Skill Sets on the main Mod Options list.
+	if DelayedCalls then
+		local tries = 0
+		local function retry()
+			tries = tries + 1
+			if attach_to_hub(nodes) or tries >= 20 then
+				return
+			end
+			DelayedCalls:Add("AutoSkillSets_HH_reattach", 0.05, retry)
+		end
+		DelayedCalls:Add("AutoSkillSets_HH_reattach", 0.05, retry)
 	end
 end)

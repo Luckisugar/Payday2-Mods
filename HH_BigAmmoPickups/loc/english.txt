@@ -47,5 +47,7 @@
 	"bap_collect_on_kill_desc": "Your kills that would drop a box are collected immediately (same as walking it). The box is removed so they do not pile up. Off by default.",
 	"bap_mag_when_full_title": "Fill magazine from reserve",
 	"bap_mag_when_full_desc": "Boxes also chamber the mag from reserve (same clip write as pressing R). Works when total ammo is already max, including RPG / missile. Off by default.",
+	"bap_mag_crouch_only_title": "Mag refill only while crouched",
+	"bap_mag_crouch_only_desc": "Fill magazine from reserve only while you are crouched. Stand up = boxes fill reserve only. Needs the option above on.",
 	"bap_share_hint": "Shared ammo / health"
 }

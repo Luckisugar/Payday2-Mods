@@ -281,6 +281,15 @@
 			"callback": "BigAmmoPickups_MagWhenFull",
 			"value": "mag_when_full",
 			"default_value": false
+		},
+		{
+			"type": "toggle",
+			"id": "bap_mag_crouch_only",
+			"title": "bap_mag_crouch_only_title",
+			"description": "bap_mag_crouch_only_desc",
+			"callback": "BigAmmoPickups_MagCrouchOnly",
+			"value": "mag_crouch_only",
+			"default_value": false
 		}
 	]
 }

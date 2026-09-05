@@ -23,7 +23,7 @@ Personal SuperBLT mods for **PAYDAY 2**. Client-side QoL / stealth tooling. Not 
   - [Ally Spectate](#9-ally-spectate)
   - [Diamond Path Helper](#10-diamond-path-helper)
   - [Meth Helper](#11-meth-helper)
-- [Notes](#notes)
+  - [You and What Army](#12-you-and-what-army)
 - [License](#license)
 
 ## Install
@@ -58,7 +58,7 @@ Based on **Silent Assassin** by **DrTachyon** (pager / stealth-kill rules).
 
 ### 5) Auto Skill Sets
 
-Saves skill builds and re-spends them after **infamy** / level-ups so you are not rebuilding the same tree by hand every time.
+Saves skill builds and re-spends them after **infamy** / level-ups so you are not rebuilding the same tree by hand every time. **Edit (Cheat)** also covers extra-point skill sets, skill budget sliders, and masking outfit totals.
 
 > Cheat restore / Edit (Cheat) can trip skill-point detectors and look bad online. Use at your own risk.
 
@@ -70,7 +70,7 @@ Full **cheat** mod: skip equipment gates and speed up waits.
 
 ### 7) Loot Mule
 
-Carry **as many bags as you want** (stack, last in / first out). Not Carry Stacker — original Luckysugar mod.
+Carry **as many bags as you want** (stack, last in / first out). Not Carry Stacker — original Luckysugar mod. Per-class throw distance and stash (no weight) live under Heist Helper.
 
 ### 8) Instant Restart
 
@@ -93,8 +93,14 @@ Prints the **real** safe floor-tile path for **The Diamond** after the chamber p
 
 Bain/Locke cook lines as ingredient callouts. Based on **Meth Helper Updated** (Offyerrocker).
 
+### 12) You and What Army
+
+Raise **your** Joker convert cap (vanilla **1**, or **2** with Confident Aced). Slider **2–32**, default **8**. Still needs Joker. Host / solo only.
+
+> If you join someone else, their lobby still enforces 1–2. Teammates in *your* lobby keep their own vanilla cap.
+
 ## License
 
-MIT for **original Luckisugar code** (Heist Helper hub, Big Ammo, Omniscience+, Saw Stealth Conceal, Auto Skill Sets, Instant Heists, Loot Mule, Instant Restart, Ally Spectate, Diamond Path Helper).
+MIT for **original Luckisugar code** (Heist Helper hub, Big Ammo, Omniscience+, Saw Stealth Conceal, Auto Skill Sets, Instant Heists, Loot Mule, Instant Restart, Ally Spectate, Diamond Path Helper, You and What Army).
 
 Ninja remains credit to **DrTachyon** (Silent Assassin fork) with Luckysugar options. Meth Helper cook lines credit **Offyerrocker**. If an original license differs, treat that folder under the original author’s terms.

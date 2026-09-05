@@ -3,11 +3,12 @@
 [![SuperBLT](https://img.shields.io/badge/SuperBLT-required-blue.svg)](https://superblt.znix.xyz/)
 [![PAYDAY 2](https://img.shields.io/badge/PAYDAY%202-mod-orange.svg)](https://store.steampowered.com/app/218620/PAYDAY_2/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Release](https://img.shields.io/github/v/release/Luckisugar/AutoSkillSets?include_prereleases)](https://github.com/Luckisugar/AutoSkillSets/releases)
 
-**Save your skill builds. Re-spend them automatically after infamy and level-ups.**
+**Save your skill builds. Re-spend them after infamy. Keep extra-point skill sets and swap them freely.**
 
-Going infamous wipes your skills on purpose. If you always rebuild the same set, that grind gets old fast. **Auto Skill Sets** remembers up to **8 builds**, spends points toward the active one as you level, and can fully restore a build when you want.
+Going infamous wipes the equipped skill set on purpose. **Auto Skill Sets** remembers up to **8 builds**, spends points toward the active one as you level, and can keep other skill sets intact so you can swap back without wiping them.
+
+This is a **Heist Helper** module.
 
 ---
 
@@ -15,13 +16,15 @@ Going infamous wipes your skills on purpose. If you always rebuild the same set,
 
 | Feature | What it does |
 |--------|----------------|
-| **8 build slots** | Save / overwrite / delete named snapshots of your skill tree |
+| **8 build slots** | Save / overwrite / delete snapshots of your skill tree |
 | **Auto-spend** | When skill points land, spend them toward the active build |
-| **Priority order** | Rebuild follows saved priority (tier-safe multi-pass) |
-| **Infamy prompt** | Optional popup: **Yes** · **No** · **Restore Skills (Cheat)** |
+| **Keep extra-point sets** | Swap to sets that spent more than your current budget. They are not wiped. Infamy still resets the equipped set. |
+| **Skill points at 100** | Slider 120–300. Extra whole points are granted while you level 1–100 |
+| **Bonus over vanilla** | Linked to the level-100 slider (`121` = bonus `1`) |
+| **Mask skills from others** | Other players see vanilla skill totals for your level. Your real skills stay. Does not hide installed mods or in-heist effects. |
+| **Infamy prompt** | Optional popup after a skill wipe |
 | **Diff view** | Owned / partial / missing vs the active build |
-| **SYSTEM chat** | Local notices only (not public lobby spam) |
-| **Edit (Cheat)** | Optional Level / Infamy / Skill Points controls |
+| **SYSTEM chat** | Local notices only |
 | **Mid-heist block** | Safety toggle — no auto-apply during heists by default |
 
 ---
@@ -30,30 +33,32 @@ Going infamous wipes your skills on purpose. If you always rebuild the same set,
 
 - [SuperBLT](https://superblt.znix.xyz/)
 - PAYDAY 2 (Steam)
+- **Heist Helper** hub (included in the zip)
 
 ---
 
 ## Install
 
 1. Install **SuperBLT** if you do not already have it.
-2. Download the latest release zip **or** clone this repo.
-3. Copy the `AutoSkillSets` folder into:
+2. Extract **both** folders into `PAYDAY 2/mods/`:
+   - `HeistHelper`
+   - `HH_AutoSkillSets`
+3. Full restart PAYDAY 2.
+4. Options → Mod Options → **Heist Helper → Auto Skill Sets**
 
-   `PAYDAY 2/mods/AutoSkillSets`
-
-4. Launch the game. Options appear under **Options → Mod Options → Auto Skill Sets**.
+If you already installed another Heist Helper pack, drop this zip in the same way. The hub stays; this module adds a new button.
 
 ---
 
 ## Quick start
 
 1. Build your skills the way you like in-game.
-2. Open **Mod Options → Auto Skill Sets**.
+2. Open **Heist Helper → Auto Skill Sets**.
 3. Pick an **Active build slot**.
 4. Click **Save current skills into slot**.
-5. Leave **Auto-spend** and **Infamy restore prompt** on (recommended).
+5. Leave **Auto-spend** on. **Keep extra-point skill sets** and **Mask skills from others** default on (rows live under **Edit (Cheat)**).
 
-After infamy, pick **Yes** to re-spend with real points, or **Restore Skills (Cheat)** for a full force-restore.
+Keep a second vanilla skill set with your full build. After infamy, the equipped set resets; you can swap back to that second set immediately.
 
 ---
 
@@ -70,14 +75,14 @@ After infamy, pick **Yes** to re-spend with real points, or **Restore Skills (Ch
 
 ### Edit (Cheat)
 
-Enable **Edit (Cheat)** first, then use:
+Turn **Edit (Cheat)** on to show these rows (saved values still apply while hidden):
 
-- **Level** + Apply  
-- **Infamy** + Apply  
-- **Skill Points** + Apply  
-- **Restore Skills (Cheat)** — complete the saved build without enough free points  
+- **Keep extra-point skill sets** — swap without wiping over-budget sets  
+- **Mask skills from others** — send vanilla-for-level totals in your outfit  
+- **Skill points at level 100** / **Bonus over vanilla** — linked sliders (vanilla 120)  
+- Level / Infamy / Skill Points / force-restore  
 
-Cheats can trip skill-point detectors and look bad online. Use at your own risk.
+Raising the sliders tops up free points to what your current level should have. Lowering does **not** strip spent skills; you get a warning if a set already spent more than the new cap. Online risk is yours. Extra skills can still be visible in-heist even with masking on.
 
 ---
 
@@ -85,7 +90,7 @@ Cheats can trip skill-point detectors and look bad online. Use at your own risk.
 
 1. Skills are unlocked in **priority order**, then remaining skills in **tree / tier order**.
 2. Tier unlock rules still apply (you cannot ace tier 4 before the tree allows it).
-3. The apply loop multi-passes until nothing else can be unlocked with current points (or until cheat fills the rest).
+3. Extra points above 120 are granted as whole points spread across levels 1–100.
 4. Every automatic or manual apply posts a short **SYSTEM** line when something changed.
 
 Builds are stored in SuperBLT’s save path as `auto_skill_sets.txt` (survives mod folder updates).
@@ -94,8 +99,7 @@ Builds are stored in SuperBLT’s save path as `auto_skill_sets.txt` (survives m
 
 ## Links
 
-- **Repo:** https://github.com/Luckisugar/AutoSkillSets  
-- **Other PD2 mods:** https://github.com/Luckisugar/Payday2-Mods  
+- **Repo:** https://github.com/Luckisugar/Payday2-Mods  
 
 ---
 

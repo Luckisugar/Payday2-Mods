@@ -20,12 +20,19 @@ if ASS._methods_defined then
 end
 ASS._methods_defined = true
 
+ASS.POINTS_AT_100_MIN = 120
+ASS.POINTS_AT_100_MAX = 300
+
 function ASS:DefaultSettings()
 	return {
 		enabled = true,
 		auto_spend = true,
 		infamy_prompt = true,
 		block_mid_heist = true,
+		unsuspend_sets = true,
+		mask_skills = true,
+		points_at_100 = 120,
+		bonus_points = 0,
 		edit_cheat = false,
 		active_slot = 1,
 		cheat_level = 100,
@@ -60,6 +67,209 @@ function ASS:EnsureBuilds()
 
 	local slot = tonumber(self.settings.active_slot) or 1
 	self.settings.active_slot = math.max(1, math.min(self.SLOT_COUNT, math.floor(slot)))
+	self:SyncBudgetSettings()
+end
+
+function ASS:FeatureOn()
+	return self.settings and self.settings.enabled == true
+end
+
+function ASS:UnsuspendOn()
+	return self:FeatureOn() and self.settings.unsuspend_sets == true
+end
+
+function ASS:MaskOn()
+	return self:FeatureOn() and self.settings.mask_skills == true
+end
+
+function ASS:SyncBudgetSettings(from)
+	self.settings = self.settings or self:DefaultSettings()
+	local min_t = self.POINTS_AT_100_MIN or 120
+	local max_t = self.POINTS_AT_100_MAX or 300
+	local t = math.floor(tonumber(self.settings.points_at_100) or min_t)
+	local b = math.floor(tonumber(self.settings.bonus_points) or 0)
+	if from == "bonus" then
+		b = math.max(0, math.min(max_t - min_t, b))
+		t = min_t + b
+	else
+		t = math.max(min_t, math.min(max_t, t))
+		b = t - min_t
+	end
+	self.settings.points_at_100 = t
+	self.settings.bonus_points = b
+	return t, b
+end
+
+function ASS:CurrentLevel()
+	if managers and managers.experience and managers.experience.current_level then
+		return math.max(0, math.floor(tonumber(managers.experience:current_level()) or 0))
+	end
+	return 0
+end
+
+function ASS:VanillaBudgetAtLevel(level)
+	level = math.max(0, math.floor(tonumber(level) or 0))
+	return level + 2 * math.floor(level / 10)
+end
+
+function ASS:ExtrasAtLevel(level)
+	self:SyncBudgetSettings()
+	local bonus = math.max(0, tonumber(self.settings.bonus_points) or 0)
+	level = math.max(0, math.floor(tonumber(level) or 0))
+	return math.floor(level * bonus / 100)
+end
+
+function ASS:BudgetAtLevel(level)
+	return self:VanillaBudgetAtLevel(level) + self:ExtrasAtLevel(level)
+end
+
+function ASS:PushOutfit()
+	if MenuCallbackHandler and MenuCallbackHandler._update_outfit_information then
+		pcall(function()
+			MenuCallbackHandler:_update_outfit_information()
+		end)
+	end
+end
+
+function ASS:CapPackedSkills(packed, cap)
+	if type(packed) ~= "string" or packed == "" then
+		return packed
+	end
+	cap = math.max(0, math.floor(tonumber(cap) or 0))
+	local dash = string.find(packed, "-", 1, true)
+	local skill_part, spec_part
+	if dash then
+		skill_part = string.sub(packed, 1, dash - 1)
+		spec_part = string.sub(packed, dash)
+	else
+		skill_part = packed
+		spec_part = ""
+	end
+	local nums = {}
+	local sum = 0
+	for tok in string.gmatch(skill_part, "[^_]+") do
+		local n = tonumber(tok) or 0
+		table.insert(nums, n)
+		sum = sum + n
+	end
+	if #nums == 0 then
+		return packed
+	end
+	if sum <= cap then
+		return packed
+	end
+	if cap == 0 or sum <= 0 then
+		for i = 1, #nums do
+			nums[i] = 0
+		end
+	else
+		local scaled = {}
+		local alloc = 0
+		for i, n in ipairs(nums) do
+			scaled[i] = math.floor(n * cap / sum)
+			alloc = alloc + scaled[i]
+		end
+		local rem = cap - alloc
+		local idx = {}
+		for i = 1, #nums do
+			idx[i] = i
+		end
+		table.sort(idx, function(a, b)
+			return nums[a] > nums[b]
+		end)
+		local i = 1
+		while rem > 0 and #idx > 0 do
+			scaled[idx[i]] = scaled[idx[i]] + 1
+			rem = rem - 1
+			i = i + 1
+			if i > #idx then
+				i = 1
+			end
+		end
+		nums = scaled
+	end
+	local out = {}
+	for i, n in ipairs(nums) do
+		out[i] = tostring(n)
+	end
+	return table.concat(out, "_") .. spec_part
+end
+
+function ASS:SetSwitchPoints(data, value)
+	value = math.max(0, math.floor(tonumber(value) or 0))
+	if Application and Application.digest_value then
+		data.points = Application:digest_value(value, true)
+	else
+		data.points = value
+	end
+end
+
+function ASS:ApplyPointBudget(reason)
+	if not self:FeatureOn() then
+		return
+	end
+	if not managers or not managers.skilltree or not managers.skilltree._global then
+		return
+	end
+	self:SyncBudgetSettings()
+	local st = managers.skilltree
+	local should = self:BudgetAtLevel(self:CurrentLevel())
+	local over = {}
+
+	for i, data in ipairs(st._global.skill_switches or {}) do
+		if data then
+			local spent = st:total_points_spent(data) or 0
+			local unspent = st:points(data) or 0
+			if spent > should then
+				local name = tostring(i)
+				if st.get_skill_switch_name then
+					local ok, label = pcall(function()
+						return st:get_skill_switch_name(i, false)
+					end)
+					if ok and label and label ~= "" then
+						name = label
+					end
+				end
+				table.insert(over, name)
+				if unspent > 0 then
+					self:SetSwitchPoints(data, 0)
+				end
+			elseif spent + unspent < should then
+				self:SetSwitchPoints(data, should - spent)
+			elseif spent + unspent > should then
+				self:SetSwitchPoints(data, should - spent)
+			end
+		end
+	end
+
+	local selected = st._global.selected_skill_switch
+	if selected and st._global.skill_switches[selected] then
+		st._global.points = st._global.skill_switches[selected].points
+	end
+
+	self:PushOutfit()
+
+	local prev = self._last_budget
+	self._last_budget = should
+	local lowered = prev ~= nil and should < prev
+
+	-- Warn only when the cap goes down under a set that already spent more.
+	-- Raising still tops up points; fat sets staying over-budget is expected.
+	if reason == "slider" and lowered and #over > 0 then
+		local body = "New budget is "
+			.. tostring(should)
+			.. " points at your current level.\nThese skill sets already spent more and were NOT reset:\n"
+			.. table.concat(over, ", ")
+			.. "\nThey stay usable while Keep extra-point skill sets is on."
+		self:SystemMsg("Budget " .. tostring(should) .. " — " .. tostring(#over) .. " set(s) over cap, not reset.")
+		if QuickMenu then
+			QuickMenu:new("Auto Skill Sets", body, {
+				{ text = "OK", is_cancel_button = true }
+			}, true)
+		end
+	elseif reason == "slider" then
+		self:SystemMsg("Skill point budget is " .. tostring(should) .. " at your current level.")
+	end
 end
 
 function ASS:Load()
@@ -710,7 +920,138 @@ function ASS:OnPointsGained()
 	end
 end
 
+function ASS:InstallSkillTreeWraps()
+	if self._wrap_skilltree then
+		return
+	end
+	if not SkillTreeManager or not SkillTreeManager.max_points_for_current_level then
+		return
+	end
+	self._wrap_skilltree = true
+
+	if SkillTreeManager.max_points_for_current_level then
+		local orig = SkillTreeManager.max_points_for_current_level
+		SkillTreeManager.max_points_for_current_level = function(st)
+			if not ASS:FeatureOn() then
+				return orig(st)
+			end
+			return ASS:BudgetAtLevel(ASS:CurrentLevel())
+		end
+	end
+
+	if SkillTreeManager.is_skill_switch_suspended then
+		local orig = SkillTreeManager.is_skill_switch_suspended
+		SkillTreeManager.is_skill_switch_suspended = function(st, switch_data)
+			if ASS:UnsuspendOn() then
+				return false
+			end
+			return orig(st, switch_data)
+		end
+	end
+
+	if SkillTreeManager.unsuspend_skill_switch then
+		local orig = SkillTreeManager.unsuspend_skill_switch
+		SkillTreeManager.unsuspend_skill_switch = function(st, switch_data)
+			if ASS:UnsuspendOn() then
+				return
+			end
+			return orig(st, switch_data)
+		end
+	end
+
+	if SkillTreeManager._aquire_points then
+		local orig = SkillTreeManager._aquire_points
+		SkillTreeManager._aquire_points = function(st, points, selected_only)
+			if selected_only or not ASS:UnsuspendOn() then
+				return orig(st, points, selected_only)
+			end
+			points = tonumber(points) or 0
+			if not st._global or not st._global.skill_switches then
+				return orig(st, points, selected_only)
+			end
+			local maxp = st:max_points_for_current_level()
+			for _, data in ipairs(st._global.skill_switches) do
+				local spent = st:total_points_spent(data) or 0
+				local cur = st:points(data) or 0
+				local newp = cur + points
+				if spent <= maxp then
+					if spent + newp > maxp then
+						newp = math.max(0, maxp - spent)
+					end
+				end
+				ASS:SetSwitchPoints(data, newp)
+			end
+			local selected = st._global.selected_skill_switch
+			if selected and st._global.skill_switches[selected] then
+				st._global.points = st._global.skill_switches[selected].points
+			end
+		end
+	end
+
+	if SkillTreeManager.level_up then
+		local orig = SkillTreeManager.level_up
+		SkillTreeManager.level_up = function(st)
+			orig(st)
+			if not ASS:FeatureOn() then
+				return
+			end
+			local lvl = ASS:CurrentLevel()
+			local extra = ASS:ExtrasAtLevel(lvl) - ASS:ExtrasAtLevel(math.max(0, lvl - 1))
+			if extra > 0 then
+				st:_aquire_points(extra)
+			end
+		end
+	end
+
+	if SkillTreeManager._verify_loaded_data then
+		local orig = SkillTreeManager._verify_loaded_data
+		SkillTreeManager._verify_loaded_data = function(st, points_aquired_during_load)
+			local saved = st._global and st._global.selected_skill_switch
+			orig(st, points_aquired_during_load)
+			if not ASS:UnsuspendOn() then
+				return
+			end
+			if saved and st._global and saved ~= st._global.selected_skill_switch and st._global.skill_switches[saved] then
+				st:switch_skills(saved)
+			end
+		end
+	end
+
+	if SkillTreeManager.pack_to_string then
+		local orig = SkillTreeManager.pack_to_string
+		SkillTreeManager.pack_to_string = function(st)
+			local packed = orig(st)
+			if not ASS:MaskOn() then
+				return packed
+			end
+			return ASS:CapPackedSkills(packed, ASS:VanillaBudgetAtLevel(ASS:CurrentLevel()))
+		end
+	end
+
+	if SkillTreeManager.pack_to_string_from_list then
+		local orig = SkillTreeManager.pack_to_string_from_list
+		SkillTreeManager.pack_to_string_from_list = function(st, list)
+			local packed = orig(st, list)
+			if not ASS:MaskOn() then
+				return packed
+			end
+			return ASS:CapPackedSkills(packed, ASS:VanillaBudgetAtLevel(ASS:CurrentLevel()))
+		end
+	end
+end
+
 function ASS:InstallHooks()
+	self:InstallSkillTreeWraps()
+
+	if not self._boot_budget and DelayedCalls and DelayedCalls.Add then
+		self._boot_budget = true
+		DelayedCalls:Add("AutoSkillSets_budget_boot", 2, function()
+			if ASS.ApplyPointBudget then
+				ASS:ApplyPointBudget("boot")
+			end
+		end)
+	end
+
 	if not Hooks or not Hooks.PostHook then
 		return
 	end

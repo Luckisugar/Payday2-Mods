@@ -38,6 +38,7 @@ if not BAP.DefaultSettings then
 			share_heal_cooldown = 3,
 			collect_on_kill = false,
 			mag_when_full = false,
+			mag_crouch_only = false,
 		}
 	end
 end
@@ -152,6 +153,9 @@ Hooks:Add("MenuManagerInitialize", "MenuManagerInitialize_BigAmmoPickups", funct
 	end
 	MenuCallbackHandler.BigAmmoPickups_MagWhenFull = function(self, item)
 		BAP.settings.mag_when_full = item:value() == "on"
+	end
+	MenuCallbackHandler.BigAmmoPickups_MagCrouchOnly = function(self, item)
+		BAP.settings.mag_crouch_only = item:value() == "on"
 	end
 	MenuCallbackHandler.BigAmmoPickups_Save = function(self)
 		BAP:Save()

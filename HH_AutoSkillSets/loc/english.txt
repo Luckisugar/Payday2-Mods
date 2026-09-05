@@ -1,6 +1,6 @@
 {
 	"ass_menu_title": "Auto Skill Sets",
-	"ass_menu_desc": "Save skill builds, auto-spend after level-ups, restore after infamy.",
+	"ass_menu_desc": "Save skill builds, auto-spend after level-ups, keep extra-point skill sets.",
 
 	"ass_enabled_title": "Enabled",
 	"ass_enabled_desc": "Master switch for Auto Skill Sets.",
@@ -13,6 +13,18 @@
 
 	"ass_block_heist_title": "Block mid-heist apply",
 	"ass_block_heist_desc": "Do not auto-spend or auto-apply while in a heist.",
+
+	"ass_unsuspend_title": "Keep extra-point skill sets",
+	"ass_unsuspend_desc": "Swap to skill sets that spent more than your current budget. They are not wiped. Infamy still resets the equipped set.",
+
+	"ass_mask_title": "Mask skills from others",
+	"ass_mask_desc": "Other players see vanilla skill totals for your level. Your real skills stay. Does not hide installed mods or in-heist effects.",
+
+	"ass_points_100_title": "Skill points at level 100",
+	"ass_points_100_desc": "Vanilla is 120. Extra whole points are granted while you level 1-100. Linked to the bonus slider.",
+
+	"ass_bonus_title": "Bonus over vanilla",
+	"ass_bonus_desc": "Extra points on top of 120. Linked to the level-100 slider (121 means bonus 1).",
 
 	"ass_slot_title": "Active build slot",
 	"ass_slot_desc": "Which saved slot is active for auto-spend, apply, save, delete, and diff.",
@@ -42,7 +54,7 @@
 	"ass_delete_desc": "Clear the active build slot.",
 
 	"ass_edit_cheat_title": "Edit (Cheat)",
-	"ass_edit_cheat_desc": "Unlock Level / Infamy / Skill Points controls below. Online risk is yours.",
+	"ass_edit_cheat_desc": "Unlock extra-point skill sets, skill budget, mask, and Level / Infamy / Skill Points. Online risk is yours.",
 
 	"ass_level_title": "Level (cheat)",
 	"ass_level_desc": "Target player level (0–100). Click Apply Level to set.",

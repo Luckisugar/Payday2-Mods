@@ -27,14 +27,33 @@ Hooks:Add("MenuManagerInitialize", "LootMule_MenuInit", function(menu_manager)
 		if LM.BroadcastHostState then
 			LM:BroadcastHostState()
 		end
+		if LM.ApplyStashFeel then
+			LM:ApplyStashFeel()
+		end
 	end
 	MenuCallbackHandler.LootMule_CrouchPickup = function(self, item)
 		LM.settings.crouch_pickup = item:value() == "on"
 		LM:Save()
 	end
-	MenuCallbackHandler.LootMule_ThrowDistance = function(self, item)
-		LM.settings.throw_distance = math.floor(item:value() * 100 + 0.5) / 100
+	MenuCallbackHandler.LootMule_Stash = function(self, item)
+		LM.settings.stash = item:value() == "on"
 		LM:Save()
+		if LM.ApplyStashFeel then
+			LM:ApplyStashFeel()
+		end
+	end
+	MenuCallbackHandler.LootMule_ThrowType = function(self, item)
+		local id = item:name()
+		local key
+		if id == "lm_throw_distance" then
+			key = "throw_distance"
+		elseif type(id) == "string" and id:sub(1, 9) == "lm_throw_" then
+			key = "throw_" .. id:sub(10)
+		end
+		if key then
+			LM.settings[key] = LM:ClampThrow(item:value())
+			LM:Save()
+		end
 	end
 	MenuCallbackHandler.LootMule_DumpAll = function(self, item)
 		LM.settings.dump_all = item:value() == "on"
@@ -53,4 +72,5 @@ Hooks:Add("MenuManagerInitialize", "LootMule_MenuInit", function(menu_manager)
 	end
 
 	MenuHelper:LoadFromJsonFile(LM._path .. "options.txt", LM, LM.settings)
+	MenuHelper:LoadFromJsonFile(LM._path .. "throw_options.txt", LM, LM.settings)
 end)

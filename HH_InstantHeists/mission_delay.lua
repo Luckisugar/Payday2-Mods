@@ -2,11 +2,15 @@
 	Instant Heists — mission element execute delays (NPC waits, staged delays, …)
 
 	Gated by ShouldScaleMissionDelay:
-	- Dialogue / radio VO elements are never scaled.
+	- Dialogue / radio VO elements are never scaled (unless they ARE the cook wait).
 	- Cook / supply waits (Cook Off, Rats, …) scale with "Speed up timers".
 	- Global "Speed mission script delays" still scales other waits (OFF by
 	  default — that one can make Bain reminder lines spam).
+
+	Capture the real _G BEFORE core:module() — see mission_timer.lua.
 ]]
+
+local REAL_G = _G
 
 core:module("CoreMissionScriptElement")
 core:import("CoreXml")
@@ -16,7 +20,7 @@ core:import("CoreClass")
 MissionScriptElement = MissionScriptElement or class()
 
 local function scale_delay(self, delay, params)
-	local IH = _G.InstantHeists
+	local IH = REAL_G.InstantHeists
 	if not IH or not delay or delay <= 0 then
 		return delay
 	end
@@ -32,11 +36,15 @@ local function scale_delay(self, delay, params)
 end
 
 local orig_base = MissionScriptElement._calc_base_delay
-function MissionScriptElement:_calc_base_delay(...)
-	return scale_delay(self, orig_base(self, ...), nil)
+if type(orig_base) == "function" then
+	function MissionScriptElement:_calc_base_delay(...)
+		return scale_delay(self, orig_base(self, ...), nil)
+	end
 end
 
 local orig_elem = MissionScriptElement._calc_element_delay
-function MissionScriptElement:_calc_element_delay(params, ...)
-	return scale_delay(self, orig_elem(self, params, ...), params)
+if type(orig_elem) == "function" then
+	function MissionScriptElement:_calc_element_delay(params, ...)
+		return scale_delay(self, orig_elem(self, params, ...), params)
+	end
 end

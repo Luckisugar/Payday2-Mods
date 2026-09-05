@@ -44,6 +44,9 @@ local function reapply_top_carry(pm)
 		cdata.has_dye_pack,
 		cdata.dye_value_multiplier
 	)
+	if LM.ApplyStashFeel then
+		LM:ApplyStashFeel()
+	end
 end
 
 local function stop_throw_state()
@@ -104,6 +107,9 @@ function PlayerManager:set_carry(...)
 	local data = self:get_my_carry_data()
 	if data and data.carry_id then
 		LM:AddCarry(data)
+	end
+	if LM.ApplyStashFeel then
+		LM:ApplyStashFeel()
 	end
 
 	if PlayerStandard and PlayerStandard.block_use_item then
@@ -204,7 +210,7 @@ function PlayerManager:on_used_body_bag(...)
 end
 
 function PlayerManager:sync_carry_data(unit, carry_id, carry_multiplier, dye_initiated, has_dye_pack, dye_value_multiplier, position, dir, throw_distance_multiplier_upgrade_level, zipline_unit, peer_id, ...)
-	local mult = LM:ThrowMult()
+	local mult = LM:ThrowMult(carry_id)
 	if mult ~= 1 and dir and not zipline_unit then
 		local session = managers.network and managers.network:session()
 		local local_id = session and session:local_peer() and session:local_peer():id()

@@ -1,0 +1,8 @@
+{
+	"yawa_menu_title": "You and What Army",
+	"yawa_menu_desc": "Raise your Joker convert cap. Host or solo. Still needs the Joker skill. Regular cops only.",
+	"yawa_enabled_title": "Enabled",
+	"yawa_enabled_desc": "Master switch. Only applies when you host (or play solo). Clients joining you keep their own 1–2 cap.",
+	"yawa_max_minions_title": "Joker limit",
+	"yawa_max_minions_desc": "How many converted cops you can have at once. Vanilla is 1, or 2 with Confident Aced. Default 8. Does not convert specials."
+}
